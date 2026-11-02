@@ -8,6 +8,10 @@ export interface WorkflowStep {
   params: Record<string, any>;
 }
 
+function toArrayBuffer(u8: Uint8Array): ArrayBuffer {
+  return u8.buffer.slice(u8.byteOffset, u8.byteOffset + u8.byteLength) as ArrayBuffer;
+}
+
 export async function executeWorkflow(
   initialPdfBytes: ArrayBuffer,
   steps: WorkflowStep[],
@@ -30,7 +34,7 @@ export async function executeWorkflow(
       case 'rotate': {
         const angle = (step.params.angle || 90) as 90 | 180 | 270;
         const res = await rotatePDF(currentBytes, angle);
-        currentBytes = (res.buffer as ArrayBuffer);
+        currentBytes = toArrayBuffer(res);
         log.push(`✓ Rotated pages by ${angle}°`);
         break;
       }
@@ -38,7 +42,7 @@ export async function executeWorkflow(
         const text = step.params.text || 'CONFIDENTIAL';
         const opacity = step.params.opacity || 0.3;
         const res = await addWatermark(currentBytes, { text, opacity });
-        currentBytes = (res.buffer as ArrayBuffer);
+        currentBytes = toArrayBuffer(res);
         log.push(`✓ Stamped watermark "${text}"`);
         break;
       }
@@ -47,19 +51,19 @@ export async function executeWorkflow(
           format: step.params.format || 'Page {n} of {total}',
           position: 'bottom-center',
         });
-        currentBytes = (res.buffer as ArrayBuffer);
+        currentBytes = toArrayBuffer(res);
         log.push(`✓ Injected page numbering`);
         break;
       }
       case 'compress': {
         const res = await compressPDF(currentBytes, 'recommended');
-        currentBytes = (res.data.buffer as ArrayBuffer);
+        currentBytes = toArrayBuffer(res.data);
         log.push(`✓ Compressed document: ${res.reductionPercent}% reduction`);
         break;
       }
       case 'pdfa': {
         const res = await convertToPDFA(currentBytes);
-        currentBytes = (res.buffer as ArrayBuffer);
+        currentBytes = toArrayBuffer(res);
         log.push(`✓ Tagged with ISO PDF/A compliance metadata`);
         break;
       }

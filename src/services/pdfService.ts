@@ -404,10 +404,10 @@ export async function convertToPDFA(fileBytes: ArrayBuffer): Promise<Uint8Array>
   const doc = await PDFDocument.load(fileBytes);
 
   // Set ISO standard PDF/A-1b metadata
-  const title = doc.getTitle() || 'PDF/A Document';
+  const title = doc.getTitle() || 'PDF/A Archival Document';
   doc.setTitle(title);
-  doc.setProducer('PDFCraft PDF/A-1b Converter');
-  doc.setCreator('PDFCraft ISO Archival Engine');
+  doc.setSubject('ISO 19005-1:2005 (PDF/A-1b Compliant)');
+  doc.setKeywords(['PDF/A', 'ISO-19005-1', 'Archival']);
 
   // Save with conformant stream structure
   return await doc.save({

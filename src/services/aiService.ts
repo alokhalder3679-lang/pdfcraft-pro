@@ -134,7 +134,12 @@ export async function translatePDF(
         `https://api.mymemory.translated.net/get?q=${encodeURIComponent(chunks[i])}&langpair=en|${targetLang}`
       );
       const json = await res.json();
-      translatedChunks.push(json.responseData?.translatedText || chunks[i]);
+      const trans = json.responseData?.translatedText;
+      if (json.responseStatus === 200 && trans && !trans.includes('MYMEMORY WARNING')) {
+        translatedChunks.push(trans);
+      } else {
+        translatedChunks.push(chunks[i]);
+      }
     } catch {
       translatedChunks.push(chunks[i]);
     }

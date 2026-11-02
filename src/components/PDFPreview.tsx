@@ -56,7 +56,7 @@ export const PDFPreview: React.FC<PDFPreviewProps> = ({
         if (file instanceof File) {
           buffer = await file.arrayBuffer();
         } else if (file instanceof Uint8Array) {
-          buffer = file.buffer as ArrayBuffer;
+          buffer = file.buffer.slice(file.byteOffset, file.byteOffset + file.byteLength) as ArrayBuffer;
         } else {
           buffer = file;
         }

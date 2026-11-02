@@ -199,27 +199,29 @@ export async function convertPDFToExcel(fileBytes: ArrayBuffer): Promise<Blob> {
  */
 export async function convertWordToPDF(fileBytes: ArrayBuffer): Promise<Uint8Array> {
   const result = await mammoth.extractRawText({ arrayBuffer: fileBytes });
-  const text = result.value || '';
+  const text = (result.value || '').trim() || 'Document converted from Word (.docx).';
 
   const doc = new jsPDF({
     unit: 'pt',
     format: 'a4',
   });
 
-  const margin = 40;
+  const margin = 45;
   const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
   const maxLineWidth = pageWidth - margin * 2;
   const lines = doc.splitTextToSize(text, maxLineWidth);
 
-  let y = 50;
-  const lineHeight = 16;
-  const pageHeight = doc.internal.pageSize.getHeight();
+  let y = 60;
+  const lineHeight = 18;
 
   for (let i = 0; i < lines.length; i++) {
     if (y + lineHeight > pageHeight - margin) {
       doc.addPage();
-      y = 50;
+      y = 60;
     }
+    doc.setFontSize(11);
+    doc.setTextColor(30, 41, 59);
     doc.text(lines[i], margin, y);
     y += lineHeight;
   }
@@ -237,14 +239,53 @@ export async function convertPowerPointToPDF(fileBytes: ArrayBuffer): Promise<Ui
     format: 'a4',
   });
 
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+
+  try {
+    const zip = await JSZip.loadAsync(fileBytes);
+    const slideFileNames = Object.keys(zip.files)
+      .filter((name) => /^ppt\/slides\/slide\d+\.xml$/i.test(name))
+      .sort((a, b) => {
+        const numA = parseInt(a.match(/slide(\d+)\.xml/i)?.[1] || '0', 10);
+        const numB = parseInt(b.match(/slide(\d+)\.xml/i)?.[1] || '0', 10);
+        return numA - numB;
+      });
+
+    if (slideFileNames.length > 0) {
+      for (let i = 0; i < slideFileNames.length; i++) {
+        if (i > 0) doc.addPage();
+        const slideXml = await zip.files[slideFileNames[i]].async('text');
+        const textMatches = Array.from(slideXml.matchAll(/<a:t(?:\s[^>]*)?>([^<]*)<\/a:t>/gi)).map((m) => m[1]);
+
+        doc.setFillColor(248, 250, 252);
+        doc.rect(0, 0, pageWidth, 48, 'F');
+        doc.setFontSize(13);
+        doc.setTextColor(225, 29, 72);
+        doc.text(`Slide ${i + 1} of ${slideFileNames.length}`, 40, 30);
+
+        doc.setFontSize(15);
+        doc.setTextColor(30, 41, 59);
+        let y = 85;
+        const bodyText = textMatches.join(' ').trim() || 'Slide content';
+        const lines = doc.splitTextToSize(bodyText, pageWidth - 80);
+        for (const line of lines.slice(0, 20)) {
+          doc.text(line, 40, y);
+          y += 22;
+        }
+      }
+      return new Uint8Array(doc.output('arraybuffer'));
+    }
+  } catch (err) {
+    console.warn('PPTX XML extraction error, generating fallback presentation page', err);
+  }
+
   doc.setFontSize(22);
-  doc.setTextColor(229, 56, 59);
-  doc.text('PowerPoint Presentation Conversion', 40, 60);
-
-  doc.setFontSize(14);
-  doc.setTextColor(80, 80, 80);
-  doc.text('Uploaded slides converted to landscape PDF document.', 40, 100);
-
+  doc.setTextColor(225, 29, 72);
+  doc.text('PowerPoint Presentation', 40, 60);
+  doc.setFontSize(12);
+  doc.setTextColor(100, 116, 139);
+  doc.text('Presentation document converted to landscape PDF.', 40, 95);
   return new Uint8Array(doc.output('arraybuffer'));
 }
 
@@ -259,32 +300,52 @@ export async function convertExcelToPDF(fileBytes: ArrayBuffer): Promise<Uint8Ar
     format: 'a4',
   });
 
-  let firstSheet = true;
-  for (const sheetName of wb.SheetNames) {
-    if (!firstSheet) doc.addPage();
-    firstSheet = false;
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+  let firstPage = true;
 
+  for (const sheetName of wb.SheetNames) {
     const ws = wb.Sheets[sheetName];
     const data: any[][] = XLSX.utils.sheet_to_json(ws, { header: 1 });
+    if (!data || data.length === 0) continue;
 
-    doc.setFontSize(16);
-    doc.setTextColor(229, 56, 59);
-    doc.text(`Sheet: ${sheetName}`, 40, 40);
+    if (!firstPage) doc.addPage();
+    firstPage = false;
+
+    doc.setFillColor(248, 250, 252);
+    doc.rect(0, 0, pageWidth, 45, 'F');
+    doc.setFontSize(14);
+    doc.setTextColor(225, 29, 72);
+    doc.text(`Sheet: ${sheetName}`, 40, 28);
 
     let y = 70;
-    doc.setFontSize(10);
-    doc.setTextColor(50, 50, 50);
+    doc.setFontSize(9);
+    doc.setTextColor(30, 41, 59);
 
-    data.slice(0, 40).forEach((row) => {
-      if (y > 540) return;
+    for (let r = 0; r < data.length; r++) {
+      if (y > pageHeight - 40) {
+        doc.addPage();
+        y = 50;
+      }
+      const row = data[r];
       let x = 40;
+      const colWidth = Math.min(130, Math.max(60, (pageWidth - 80) / Math.max(1, row.length)));
+
       row.forEach((cellVal) => {
-        const text = String(cellVal || '').slice(0, 20);
+        const text = String(cellVal !== undefined && cellVal !== null ? cellVal : '').slice(0, 25);
         doc.text(text, x, y);
-        x += 100;
+        x += colWidth;
       });
+
+      doc.setDrawColor(241, 245, 249);
+      doc.line(40, y + 4, pageWidth - 40, y + 4);
       y += 18;
-    });
+    }
+  }
+
+  if (firstPage) {
+    doc.setFontSize(14);
+    doc.text('Spreadsheet contains no printable records.', 40, 60);
   }
 
   return new Uint8Array(doc.output('arraybuffer'));
@@ -386,7 +447,6 @@ export async function convertJPGToPDF(
  */
 export async function convertHTMLToPDF(htmlOrUrl: string, isUrl = false): Promise<Uint8Array> {
   if (isUrl) {
-    // SSRF validation
     const urlObj = new URL(htmlOrUrl);
     const hostname = urlObj.hostname.toLowerCase();
     const isPrivate =
@@ -403,14 +463,21 @@ export async function convertHTMLToPDF(htmlOrUrl: string, isUrl = false): Promis
     }
   }
 
+  const rawHtml = isUrl
+    ? `<h1>Webpage Snapshot</h1><p>Source URL: ${encodeURI(htmlOrUrl)}</p>`
+    : htmlOrUrl;
+
+  // Headless / non-DOM environments fallback
+  if (typeof document === 'undefined') {
+    const plainText = rawHtml.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+    return convertTextToPDF(plainText || 'HTML Document Content');
+  }
+
   const doc = new jsPDF({
     unit: 'pt',
     format: 'a4',
   });
 
-  const rawHtml = isUrl
-    ? `<h1>Webpage Snapshot</h1><p>Source URL: ${encodeURI(htmlOrUrl)}</p>`
-    : htmlOrUrl;
   const cleanHtml = typeof window !== "undefined" && DOMPurify && typeof DOMPurify.sanitize === "function"
     ? DOMPurify.sanitize(rawHtml, { ADD_TAGS: ["style"] })
     : rawHtml;
