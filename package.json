@@ -1,5 +1,6 @@
 {
-  "name": "pdf-suite",
+  "name": "pdfcraft-pro",
+  "homepage": "https://pdfcraft-pro.vercel.app",
   "private": true,
   "version": "1.0.0",
   "type": "module",

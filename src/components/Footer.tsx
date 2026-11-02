@@ -144,6 +144,10 @@ export const Footer: React.FC<FooterProps> = ({ onSelectTool }) => {
             <span>All 35 Tools Operational</span>
             <span>•</span>
             <span className="font-mono text-slate-400">Release 2.4</span>
+            <span>•</span>
+            <a href="https://pdfcraft-pro.vercel.app/" className="text-rose-600 hover:text-rose-700 font-semibold transition-colors">pdfcraft-pro.vercel.app</a>
+            <span>•</span>
+            <a href="https://github.com/alokhalder3679-lang/pdfcraft-pro" target="_blank" rel="noreferrer" className="text-slate-600 hover:text-slate-900 transition-colors">GitHub</a>
           </div>
 
           <div className="flex items-center gap-4 text-xs font-mono text-slate-400">

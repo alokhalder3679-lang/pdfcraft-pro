@@ -5,7 +5,11 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue.svg?logo=typescript)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-6.0-646cff.svg?logo=vite)](https://vitejs.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3.4-38b2ac.svg?logo=tailwind-css)](https://tailwindcss.com/)
+[![Live Demo](https://img.shields.io/badge/Demo-pdfcraft--pro.vercel.app-000000.svg?logo=vercel&logoColor=white)](https://pdfcraft-pro.vercel.app/)
+[![Vercel Deployment](https://img.shields.io/badge/Deployment-Live%20on%20Vercel-success.svg?logo=vercel)](https://pdfcraft-pro.vercel.app/)
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
+
+> 🚀 **Live Production Application:** [https://pdfcraft-pro.vercel.app/](https://pdfcraft-pro.vercel.app/)
 
 **PDFCraft Pro** is an open-source, modern web application delivering **35 comprehensive document and PDF manipulation tools**. Inspired by popular tools like iLovePDF, PDFCraft Pro processes documents **100% locally in your browser** using WebAssembly and client-side JavaScript engines. No files are ever uploaded to a server, guaranteeing total confidentiality and enterprise-grade privacy.
 

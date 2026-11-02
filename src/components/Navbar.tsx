@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Menu, X, ShieldCheck, ChevronDown, Layers, Sparkles, Command, HardDrive, Cpu } from 'lucide-react';
+import { Search, Menu, X, ShieldCheck, ChevronDown, Layers, Sparkles, Command, HardDrive, Cpu, Github } from 'lucide-react';
 import { PDF_TOOLS } from '../types/tools';
 import { CommandPalette } from './CommandPalette';
 
