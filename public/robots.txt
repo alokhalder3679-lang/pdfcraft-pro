@@ -1,0 +1,41 @@
+# https://www.robotstxt.org/robotstxt.html
+# PDFCraft Pro Search Engine Crawling Policy
+
+User-agent: *
+Allow: /
+
+# Allow AI Search & Citability Crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# Disallow aggressive scraping bots that do not cite sources
+User-agent: Bytespider
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+# Sitemaps
+Sitemap: https://pdfcraft-pro.vercel.app/sitemap.xml
+Sitemap: https://pdfcraft-pro.is-a.dev/sitemap.xml

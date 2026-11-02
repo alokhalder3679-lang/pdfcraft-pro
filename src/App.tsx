@@ -5,6 +5,7 @@ import { ContactModal } from './components/ContactModal';
 import { HomePage } from './pages/HomePage';
 import { ToolPage } from './pages/ToolPage';
 import { PDF_TOOLS } from './types/tools';
+import { updateDocumentSEO } from './services/seoService';
 
 export const App: React.FC = () => {
   const [currentToolId, setCurrentToolId] = useState<string | null>(null);
@@ -31,6 +32,11 @@ export const App: React.FC = () => {
     window.addEventListener('popstate', handleLocationChange);
     return () => window.removeEventListener('popstate', handleLocationChange);
   }, []);
+
+  // Synchronize SEO Title, Meta Tags, Canonical URL & Schema per route
+  useEffect(() => {
+    updateDocumentSEO(currentToolId);
+  }, [currentToolId]);
 
   const handleSelectTool = (toolId: string | null, files?: File[]) => {
     setCurrentToolId(toolId);

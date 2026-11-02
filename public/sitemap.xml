@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <!-- Homepage -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <!-- Merge PDF -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/merge-pdf</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <!-- Split PDF -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/split-pdf</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <!-- Compress PDF -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/compress-pdf</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <!-- PDF to Word -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/pdf-to-word</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <!-- PDF to PowerPoint -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/pdf-to-powerpoint</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- PDF to Excel -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/pdf-to-excel</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- Word to PDF -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/word-to-pdf</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <!-- PowerPoint to PDF -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/powerpoint-to-pdf</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- Excel to PDF -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/excel-to-pdf</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- Edit PDF -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/edit-pdf</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <!-- PDF to JPG -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/pdf-to-jpg</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <!-- JPG to PDF -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/jpg-to-pdf</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <!-- Sign PDF -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/sign-pdf</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <!-- Watermark -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/watermark-pdf</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- Rotate PDF -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/rotate-pdf</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- HTML to PDF -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/html-to-pdf</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- Unlock PDF -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/unlock-pdf</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <!-- Protect PDF -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/protect-pdf</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <!-- Organize PDF -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/organize-pdf</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <!-- PDF to PDF/A -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/pdf-to-pdfa</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- Repair PDF -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/repair-pdf</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- Page numbers -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/page-numbers</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- Scan to PDF -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/scan-to-pdf</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- OCR PDF -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/ocr-pdf</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <!-- Compare PDF -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/compare-pdf</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- Redact PDF -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/redact-pdf</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- Crop PDF -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/crop-pdf</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- PDF Forms -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/pdf-forms</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- AI Summarizer -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/ai-summarizer</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- Translate PDF -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/translate-pdf</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- PDF to Markdown -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/pdf-to-markdown</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- Text to PDF -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/text-to-pdf</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- Markdown PDF -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/markdown-to-pdf</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- Flatten PDF -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/flatten-pdf</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- Create a workflow -->
+  <url>
+    <loc>https://pdfcraft-pro.vercel.app/tools/workflow</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>

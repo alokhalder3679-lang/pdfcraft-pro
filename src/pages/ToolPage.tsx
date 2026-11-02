@@ -8,6 +8,7 @@ import { SignaturePad } from '../components/SignaturePad';
 import { CameraScanner } from '../components/CameraScanner';
 import { DocumentComparator } from '../components/DocumentComparator';
 import { EmailShareModal } from '../components/EmailShareModal';
+import { ToolSEOSection } from '../components/ToolSEOSection';
 import {
   ArrowLeft,
   Settings2,
@@ -1266,6 +1267,13 @@ export const ToolPage: React.FC<ToolPageProps> = ({ toolId, onBack, onSelectTool
           )}
         </div>
       </div>
+
+      {/* Semantic Guide, Steps, FAQs, and Related Tools */}
+      <ToolSEOSection
+        toolId={tool.id}
+        onSelectTool={(id) => onSelectTool(id)}
+        onBackToHome={onBack}
+      />
 
       <EmailShareModal
         isOpen={emailModalOpen}
