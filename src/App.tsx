@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
+import { ContactModal } from './components/ContactModal';
 import { HomePage } from './pages/HomePage';
 import { ToolPage } from './pages/ToolPage';
 import { PDF_TOOLS } from './types/tools';
@@ -9,6 +10,7 @@ export const App: React.FC = () => {
   const [currentToolId, setCurrentToolId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [preloadedFiles, setPreloadedFiles] = useState<File[]>([]);
+  const [contactModalOpen, setContactModalOpen] = useState(false);
 
   // Handle URL route synchronization
   useEffect(() => {
@@ -53,6 +55,7 @@ export const App: React.FC = () => {
         currentToolId={currentToolId}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
+        onOpenContact={() => setContactModalOpen(true)}
       />
 
       <main className="flex-1">
@@ -71,7 +74,16 @@ export const App: React.FC = () => {
         )}
       </main>
 
-      <Footer onSelectTool={handleSelectTool} />
+      <Footer
+        onSelectTool={handleSelectTool}
+        onOpenContact={() => setContactModalOpen(true)}
+      />
+
+      <ContactModal
+        isOpen={contactModalOpen}
+        onClose={() => setContactModalOpen(false)}
+        currentToolId={currentToolId}
+      />
     </div>
   );
 };

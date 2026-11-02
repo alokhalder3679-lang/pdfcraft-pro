@@ -4,10 +4,10 @@
 [![React](https://img.shields.io/badge/React-18.3-61dafb.svg?logo=react)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue.svg?logo=typescript)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-6.0-646cff.svg?logo=vite)](https://vitejs.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3.4-38b2ac.svg?logo=tailwind-css)](https://tailwindcss.com/)
 [![Live Demo](https://img.shields.io/badge/Demo-pdfcraft--pro.vercel.app-000000.svg?logo=vercel&logoColor=white)](https://pdfcraft-pro.vercel.app/)
-[![Vercel Deployment](https://img.shields.io/badge/Deployment-Live%20on%20Vercel-success.svg?logo=vercel)](https://pdfcraft-pro.vercel.app/)
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
+[![Free Domain](https://img.shields.io/badge/Free%20Domain-is--a.dev%20%7C%20js.org-brightgreen.svg)](docs/FREE_DOMAIN_AND_EMAIL_GUIDE.md)
+[![Free Email](https://img.shields.io/badge/Free%20Email-Web3Forms%20%7C%20ImprovMX-orange.svg)](docs/FREE_DOMAIN_AND_EMAIL_GUIDE.md)
+[![Powered by free-for-dev](https://img.shields.io/badge/Powered%20by-free--for--dev-purple.svg)](https://github.com/ripienaar/free-for-dev)
 
 > 🚀 **Live Production Application:** [https://pdfcraft-pro.vercel.app/](https://pdfcraft-pro.vercel.app/)
 
@@ -105,6 +105,25 @@ npm run preview
 ```
 
 The compiled assets will be in `./dist/`.
+
+---
+
+## 🌐 Free Custom Domain & Email Infrastructure
+
+Curated directly from [ripienaar/free-for-dev](https://github.com/ripienaar/free-for-dev.git):
+
+* **Custom Domain (`is-a.dev`)**: Pre-configured at [`domains/pdfcraft-pro.json`](domains/pdfcraft-pro.json) pointing to `cname.vercel-dns.com` for instant SSL edge routing.
+* **JS Ecosystem Domain (`js.org`)**: Formatted for `js-org/js.org` submission at [`domains/js-org-cname.txt`](domains/js-org-cname.txt).
+* **Zero-Backend Email Forms (`Web3Forms`)**: In-app Contact, Feedback, and Tool Request modals delivering directly to inbox with spam protection.
+* **Free MX Email Forwarding (`ImprovMX` / `eForward`)**: Routes `support@pdfcraft-pro.is-a.dev` straight to personal Gmail without running mail servers.
+* **Document Share via Email**: One-click email notification generator in `ToolPage.tsx`.
+
+📘 **Read the full step-by-step activation guide**: [docs/FREE_DOMAIN_AND_EMAIL_GUIDE.md](docs/FREE_DOMAIN_AND_EMAIL_GUIDE.md)
+
+Verify domain & email setup anytime:
+```bash
+node scripts/verify-domain-and-email.mjs
+```
 
 ---
 

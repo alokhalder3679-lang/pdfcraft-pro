@@ -7,6 +7,7 @@ import { PageGrid, PageCardState } from '../components/PageGrid';
 import { SignaturePad } from '../components/SignaturePad';
 import { CameraScanner } from '../components/CameraScanner';
 import { DocumentComparator } from '../components/DocumentComparator';
+import { EmailShareModal } from '../components/EmailShareModal';
 import {
   ArrowLeft,
   Settings2,
@@ -63,6 +64,7 @@ export const ToolPage: React.FC<ToolPageProps> = ({ toolId, onBack, onSelectTool
   const [downloadFileName, setDownloadFileName] = useState<string>('output.pdf');
   const [outputSize, setOutputSize] = useState<number | undefined>(undefined);
   const [originalSize, setOriginalSize] = useState<number | undefined>(undefined);
+  const [emailModalOpen, setEmailModalOpen] = useState(false);
 
   // Tool Specific Settings States
   const [splitMode, setSplitMode] = useState<'all' | 'range' | 'extract'>('range');
@@ -1078,6 +1080,7 @@ export const ToolPage: React.FC<ToolPageProps> = ({ toolId, onBack, onSelectTool
             originalSize={originalSize}
             onReset={handleReset}
             onProcess={handleProcess}
+            onEmailShare={() => setEmailModalOpen(true)}
             processButtonText={getActionVerb(tool.id, files.length)}
             canProcess={isTextTool || files.length > 0}
           />
@@ -1263,6 +1266,13 @@ export const ToolPage: React.FC<ToolPageProps> = ({ toolId, onBack, onSelectTool
           )}
         </div>
       </div>
+
+      <EmailShareModal
+        isOpen={emailModalOpen}
+        onClose={() => setEmailModalOpen(false)}
+        documentName={downloadFileName}
+        toolName={tool.name}
+      />
     </div>
   );
 };

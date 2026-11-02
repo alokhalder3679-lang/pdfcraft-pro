@@ -1,12 +1,13 @@
 import React from 'react';
-import { FileText, ShieldCheck, Lock, Cpu, Heart, Command, ArrowRight } from 'lucide-react';
+import { FileText, ShieldCheck, Lock, Cpu, Heart, Command, ArrowRight, Mail, Globe } from 'lucide-react';
 import { PDF_TOOLS } from '../types/tools';
 
 interface FooterProps {
   onSelectTool: (id: string | null) => void;
+  onOpenContact?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onSelectTool }) => {
+export const Footer: React.FC<FooterProps> = ({ onSelectTool, onOpenContact }) => {
   return (
     <footer className="bg-white border-t border-slate-200/90 mt-20 pt-12 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -137,8 +138,8 @@ export const Footer: React.FC<FooterProps> = ({ onSelectTool }) => {
         </div>
 
         {/* Bottom Metadata & Legal */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 font-medium">
-          <div className="flex items-center gap-2">
+        <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500 font-medium">
+          <div className="flex flex-wrap items-center gap-2">
             <span className="font-extrabold text-slate-800">PDFCraft Engine</span>
             <span>•</span>
             <span>All 35 Tools Operational</span>
@@ -148,9 +149,31 @@ export const Footer: React.FC<FooterProps> = ({ onSelectTool }) => {
             <a href="https://pdfcraft-pro.vercel.app/" className="text-rose-600 hover:text-rose-700 font-semibold transition-colors">pdfcraft-pro.vercel.app</a>
             <span>•</span>
             <a href="https://github.com/alokhalder3679-lang/pdfcraft-pro" target="_blank" rel="noreferrer" className="text-slate-600 hover:text-slate-900 transition-colors">GitHub</a>
+            {onOpenContact && (
+              <>
+                <span>•</span>
+                <button
+                  type="button"
+                  onClick={onOpenContact}
+                  className="text-rose-600 hover:underline font-semibold cursor-pointer inline-flex items-center gap-1"
+                >
+                  <Mail className="w-3 h-3" /> Contact & Feedback
+                </button>
+                <span>•</span>
+                <button
+                  type="button"
+                  onClick={onOpenContact}
+                  className="text-slate-600 hover:text-slate-900 font-semibold cursor-pointer inline-flex items-center gap-1"
+                >
+                  <Globe className="w-3 h-3" /> Free Domain & Email Specs
+                </button>
+              </>
+            )}
           </div>
 
           <div className="flex items-center gap-4 text-xs font-mono text-slate-400">
+            <span>Powered by <a href="https://github.com/ripienaar/free-for-dev" target="_blank" rel="noreferrer" className="text-slate-600 hover:text-rose-600">free-for-dev</a></span>
+            <span>•</span>
             <span>Press <kbd className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">Ctrl+K</kbd> to search</span>
             <span>•</span>
             <button

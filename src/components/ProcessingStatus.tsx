@@ -1,5 +1,5 @@
 import React from 'react';
-import { Loader2, CheckCircle2, AlertTriangle, Download, RefreshCw, ArrowRight, FileCheck, ShieldCheck, ArrowDownRight } from 'lucide-react';
+import { Loader2, CheckCircle2, AlertTriangle, Download, RefreshCw, ArrowRight, FileCheck, ShieldCheck, ArrowDownRight, Mail } from 'lucide-react';
 
 interface ProcessingStatusProps {
   status: 'idle' | 'processing' | 'success' | 'error';
@@ -12,6 +12,7 @@ interface ProcessingStatusProps {
   originalSize?: number;
   onReset?: () => void;
   onProcess?: () => void;
+  onEmailShare?: () => void;
   processButtonText?: string;
   canProcess?: boolean;
 }
@@ -27,6 +28,7 @@ export const ProcessingStatus: React.FC<ProcessingStatusProps> = ({
   originalSize,
   onReset,
   onProcess,
+  onEmailShare,
   processButtonText = 'Process Document',
   canProcess = true,
 }) => {
@@ -130,6 +132,17 @@ export const ProcessingStatus: React.FC<ProcessingStatusProps> = ({
                 <Download className="w-4 h-4" />
                 <span>Download {downloadFileName}</span>
               </a>
+            )}
+
+            {onEmailShare && (
+              <button
+                type="button"
+                onClick={onEmailShare}
+                className="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 font-bold text-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+              >
+                <Mail className="w-4 h-4 text-rose-500" />
+                <span>Email Document</span>
+              </button>
             )}
 
             {onReset && (

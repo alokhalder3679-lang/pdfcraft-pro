@@ -1,0 +1,6 @@
+// js.org registration record for PDFCraft Pro
+// Submit a Pull Request to https://github.com/js-org/js.org
+// Add this entry to cnames_active.js under alphabetical order:
+
+"pdfcraft": "cname.vercel-dns.com",
+"pdfcraft-pro": "cname.vercel-dns.com"
