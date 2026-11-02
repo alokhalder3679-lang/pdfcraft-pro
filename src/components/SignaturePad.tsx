@@ -10,7 +10,7 @@ export const SignaturePad: React.FC<SignaturePadProps> = ({ onSignatureReady, cl
   const [tab, setTab] = useState<'draw' | 'type' | 'upload'>('draw');
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isDrawing, setIsDrawing] = useState(false);
-  const [typedName, setTypedName] = useState('Alex Mercer');
+  const [typedName, setTypedName] = useState('Your Signature');
   const [selectedFont, setSelectedFont] = useState('cursive');
   const [hasDrawn, setHasDrawn] = useState(false);
 

@@ -1,3 +1,5 @@
+import DOMPurify from 'dompurify';
+import './pdfWorker';
 import { PDFDocument } from 'pdf-lib';
 import { Document, Paragraph, TextRun, HeadingLevel, Packer } from 'docx';
 import * as XLSX from 'xlsx';
@@ -406,9 +408,12 @@ export async function convertHTMLToPDF(htmlOrUrl: string, isUrl = false): Promis
     format: 'a4',
   });
 
-  const cleanHtml = isUrl
-    ? `<h1>Webpage Snapshot</h1><p>Source URL: ${htmlOrUrl}</p>`
+  const rawHtml = isUrl
+    ? `<h1>Webpage Snapshot</h1><p>Source URL: ${encodeURI(htmlOrUrl)}</p>`
     : htmlOrUrl;
+  const cleanHtml = typeof window !== "undefined" && DOMPurify && typeof DOMPurify.sanitize === "function"
+    ? DOMPurify.sanitize(rawHtml, { ADD_TAGS: ["style"] })
+    : rawHtml;
 
   const container = document.createElement('div');
   container.style.width = '600px';

@@ -1,3 +1,4 @@
+import '../services/pdfWorker';
 import React, { useEffect, useState, useRef } from 'react';
 import * as pdfjsLib from 'pdfjs-dist';
 import { RotateCw, RotateCcw, Trash2, Undo2, ArrowLeft, ArrowRight, CheckSquare, Square, Loader2 } from 'lucide-react';

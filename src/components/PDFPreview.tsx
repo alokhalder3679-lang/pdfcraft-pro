@@ -1,3 +1,4 @@
+import '../services/pdfWorker';
 import React, { useEffect, useRef, useState } from 'react';
 import * as pdfjsLib from 'pdfjs-dist';
 import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut, Loader2, FileWarning } from 'lucide-react';

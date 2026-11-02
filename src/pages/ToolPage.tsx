@@ -44,15 +44,17 @@ import * as workflowService from '../services/workflowService';
 interface ToolPageProps {
   toolId: string;
   onBack: () => void;
-  onSelectTool: (id: string) => void;
+  onSelectTool: (id: string, files?: File[]) => void;
+  preloadedFiles?: File[];
 }
 
-export const ToolPage: React.FC<ToolPageProps> = ({ toolId, onBack, onSelectTool }) => {
+export const ToolPage: React.FC<ToolPageProps> = ({ toolId, onBack, onSelectTool, preloadedFiles }) => {
   const tool = PDF_TOOLS.find((t) => t.id === toolId) || PDF_TOOLS[0];
   const toolIndex = PDF_TOOLS.findIndex((t) => t.id === tool.id) + 1;
   const toolNum = String(toolIndex).padStart(2, '0');
 
-  const [files, setFiles] = useState<File[]>([]);
+  const [files, setFiles] = useState<File[]>(preloadedFiles || []);
+  const [showTechnicalDetails, setShowTechnicalDetails] = useState(false);
   const [processingStatus, setProcessingStatus] = useState<'idle' | 'processing' | 'success' | 'error'>('idle');
   const [statusMessage, setStatusMessage] = useState<string>('');
   const [progress, setProgress] = useState<number | undefined>(undefined);
@@ -76,13 +78,13 @@ export const ToolPage: React.FC<ToolPageProps> = ({ toolId, onBack, onSelectTool
   const [pageNumberPos, setPageNumberPos] = useState<'bottom-center' | 'bottom-right' | 'top-right' | 'bottom-left' | 'top-center'>('bottom-center');
   const [jpgOrientation, setJpgOrientation] = useState<'portrait' | 'landscape'>('portrait');
   const [htmlInput, setHtmlInput] = useState<string>(
-    '<!DOCTYPE html>\n<html>\n<head>\n<style>\nbody { font-family: sans-serif; padding: 20px; color: #1e293b; }\nh1 { color: #e11d48; margin-bottom: 8px; }\ntable { width: 100%; border-collapse: collapse; margin-top: 16px; }\nth, td { border: 1px solid #cbd5e1; padding: 8px; text-align: left; font-size: 13px; }\nth { background: #f8fafc; }\n</style>\n</head>\n<body>\n<h1>Executive Report</h1>\n<p>Generated via PDFCraft In-Browser Engine.</p>\n<table>\n<tr><th>Metric</th><th>Q1</th><th>Q2</th></tr>\n<tr><td>Document Throughput</td><td>142,500</td><td>289,100</td></tr>\n<tr><td>Data Compression</td><td>64.2%</td><td>71.8%</td></tr>\n</table>\n</body>\n</html>'
+    '<!DOCTYPE html>\n<html>\n<head>\n<style>\nbody { font-family: sans-serif; padding: 20px; color: #1e293b; }\nh1 { color: #e11d48; margin-bottom: 8px; }\ntable { width: 100%; border-collapse: collapse; margin-top: 16px; }\nth, td { border: 1px solid #cbd5e1; padding: 8px; text-align: left; font-size: 13px; }\nth { background: #f8fafc; }\n</style>\n</head>\n<body>\n<h1>Project Invoice</h1>\n<p>Client-Side Document Export</p>\n<table>\n<tr><th>Metric</th><th>Q1</th><th>Q2</th></tr>\n<tr><td>Document Throughput</td><td>142,500</td><td>289,100</td></tr>\n<tr><td>Data Compression</td><td>64.2%</td><td>71.8%</td></tr>\n</table>\n</body>\n</html>'
   );
   const [textInput, setTextInput] = useState<string>(
-    'MEMORANDUM\n\nTO: Executive Management Team\nFROM: Operations & Compliance\nDATE: October 2026\nSUBJECT: Document Processing Security & Protocol\n\n1. OBJECTIVE\nTo establish rigorous in-browser standards for document manipulation without remote server transmissions.\n\n2. TECHNICAL ARCHITECTURE\nAll cryptographic signing, flate compression, and optical recognition operate inside the client browser instance using WebAssembly.\n\n3. ACTION ITEMS\n- Audit existing internal document pipelines.\n- Verify all staff utilize verified client-side suites.'
+    'PROJECT DESIGN BRIEF & NOTES\n\nDate: November 2026\nProject: Client-Side Document Suite\nStatus: Active\n\n1. SUMMARY\nBuild a privacy-preserving, fast document suite that operates completely within the client browser. No user files should ever be transmitted to external servers.\n\n2. CORE REQUIREMENTS\n- Merge, split, compress, and edit PDFs locally.\n- Support conversion between PDF, Word, Excel, and PowerPoint.\n- Interactive signing with touch and stylus support.\n- Fast keyboard navigation (Ctrl+K palette).\n\n3. NEXT STEPS\n- Gather feedback from community testers.\n- Ensure zero-egress privacy across all 35 tools.'
   );
   const [markdownInput, setMarkdownInput] = useState<string>(
-    '# Project Architecture Specification\n\n> Document Version: 2.4 | Classification: Restricted\n\n## Core Principles\n1. **Zero Network Egress**: Documents remain strictly in device memory.\n2. **Deterministic Processing**: PDF byte streams are rebuilt with compliant xref tables.\n3. **ISO Compliance**: PDF/A-1b metadata embedding for long-term legal archival.\n\n## Supported Matrices\n| Format | Ingest | Export |\n| :--- | :--- | :--- |\n| Word (.docx) | Supported | Supported |\n| Excel (.xlsx) | Supported | Supported |\n| PowerPoint (.pptx) | Supported | Supported |'
+    '# Product Roadmap & Architecture\n\n> A modern, local-first document processing suite built for privacy and performance.\n\n## Key Features\n- **Zero Cloud Uploads**: All file processing happens locally in WebAssembly.\n- **Office Compatibility**: Convert seamlessly between PDF, Word, Excel, and PowerPoint.\n- **Page Management**: Reorder, rotate, split, and extract pages visually.\n\n## Milestones\n| Milestone | Scope | Target Date |\n| :--- | :--- | :--- |\n| Core Tools | 35 Verified In-Browser Utilities | Completed |\n| UI Polish | Responsive Bento Studio & Dark Accent | Completed |\n| Community Release | Public GitHub Repository & Vercel Deployment | Live | Supported |\n| Excel (.xlsx) | Supported | Supported |\n| PowerPoint (.pptx) | Supported | Supported |'
   );
   const [targetLanguage, setTargetLanguage] = useState<string>('es');
   const [aiSummaryResult, setAiSummaryResult] = useState<aiService.AISummaryResult | null>(null);
@@ -112,7 +114,12 @@ export const ToolPage: React.FC<ToolPageProps> = ({ toolId, onBack, onSelectTool
 
   // Reset tool state when toolId changes
   useEffect(() => {
-    setFiles([]);
+    if (preloadedFiles && preloadedFiles.length > 0) {
+      setFiles(preloadedFiles);
+      setOriginalSize(preloadedFiles[0].size);
+    } else {
+      setFiles([]);
+    }
     setProcessingStatus('idle');
     setErrorMessage(null);
     if (downloadUrl) URL.revokeObjectURL(downloadUrl);
@@ -124,7 +131,7 @@ export const ToolPage: React.FC<ToolPageProps> = ({ toolId, onBack, onSelectTool
     setDetectedFormFields([]);
     setFormFieldValues({});
     setExecutionLogs([]);
-  }, [toolId]);
+  }, [toolId, preloadedFiles]);
 
   // Extract form fields if tool is PDF Forms
   useEffect(() => {
@@ -138,14 +145,14 @@ export const ToolPage: React.FC<ToolPageProps> = ({ toolId, onBack, onSelectTool
             setFormFieldValues(initialVals);
           } else {
             setDetectedFormFields([
-              { name: 'FullName', type: 'PDFTextField', value: 'Alex Mercer' },
-              { name: 'Organization', type: 'PDFTextField', value: 'Document Security Inc.' },
+              { name: 'FullName', type: 'PDFTextField', value: 'Jane Doe' },
+              { name: 'Organization', type: 'PDFTextField', value: 'Acme Corp' },
               { name: 'SignDate', type: 'PDFTextField', value: '2026-10-25' },
               { name: 'AgreedToTerms', type: 'PDFCheckBox', value: 'true' },
             ]);
             setFormFieldValues({
-              FullName: 'Alex Mercer',
-              Organization: 'Document Security Inc.',
+              FullName: 'Jane Doe',
+              Organization: 'Acme Corp',
               SignDate: '2026-10-25',
               AgreedToTerms: 'true',
             });
@@ -570,6 +577,47 @@ export const ToolPage: React.FC<ToolPageProps> = ({ toolId, onBack, onSelectTool
     setExecutionLogs([]);
   };
 
+  const getActionVerb = (id: string, count: number): string => {
+    switch (id) {
+      case 'merge-pdf': return count > 1 ? `Merge ${count} PDF Files` : 'Merge PDF Files';
+      case 'split-pdf': return 'Split PDF Pages';
+      case 'compress-pdf': return 'Compress Document';
+      case 'pdf-to-word': return 'Convert to Word (.docx)';
+      case 'pdf-to-powerpoint': return 'Convert to PowerPoint (.pptx)';
+      case 'pdf-to-excel': return 'Convert to Excel (.xlsx)';
+      case 'word-to-pdf': return 'Convert Word to PDF';
+      case 'powerpoint-to-pdf': return 'Convert Presentation to PDF';
+      case 'excel-to-pdf': return 'Convert Spreadsheet to PDF';
+      case 'edit-pdf': return 'Save Annotations';
+      case 'pdf-to-jpg': return 'Extract Page Images';
+      case 'jpg-to-pdf': return count > 1 ? `Combine ${count} Images into PDF` : 'Create PDF from Images';
+      case 'sign-pdf': return 'Apply Signature';
+      case 'watermark-pdf': return 'Apply Watermark';
+      case 'rotate-pdf': return `Rotate by ${rotateAngle}°`;
+      case 'html-to-pdf': return 'Render HTML to PDF';
+      case 'unlock-pdf': return 'Remove Restrictions';
+      case 'protect-pdf': return 'Encrypt with Password';
+      case 'organize-pdf': return 'Save Reordered PDF';
+      case 'pdf-to-pdfa': return 'Convert to Archival PDF/A';
+      case 'repair-pdf': return 'Repair Document';
+      case 'page-numbers': return 'Add Page Numbers';
+      case 'scan-to-pdf': return 'Compile Scans into PDF';
+      case 'ocr-pdf': return 'Extract Text with OCR';
+      case 'compare-pdf': return 'Compare Both Documents';
+      case 'redact-pdf': return 'Apply Permanent Redactions';
+      case 'crop-pdf': return 'Crop Page Margins';
+      case 'pdf-forms': return 'Export Filled Form';
+      case 'ai-summarizer': return 'Generate Summary';
+      case 'translate-pdf': return `Translate to ${targetLanguage.toUpperCase()}`;
+      case 'pdf-to-markdown': return 'Extract to Markdown';
+      case 'text-to-pdf': return 'Convert Text to PDF';
+      case 'markdown-to-pdf': return 'Render Markdown to PDF';
+      case 'flatten-pdf': return 'Flatten Document Layers';
+      case 'workflow': return 'Run Processing Pipeline';
+      default: return 'Process Document';
+    }
+  };
+
   const isTextTool = tool.id === 'html-to-pdf' || tool.id === 'text-to-pdf' || tool.id === 'markdown-to-pdf';
 
   return (
@@ -589,7 +637,7 @@ export const ToolPage: React.FC<ToolPageProps> = ({ toolId, onBack, onSelectTool
 
         <div className="flex items-center gap-2">
           <span className="text-[11px] font-mono font-bold px-2.5 py-1 rounded-md bg-white border border-slate-200 text-slate-600">
-            SPECIFICATION #{toolNum} OF 35
+            Tool #{toolNum} of 35
           </span>
           <span className="text-[11px] font-bold px-2.5 py-1 rounded-md bg-rose-50 text-rose-700 border border-rose-200/60 uppercase font-mono">
             {tool.category.replace('-', ' ')}
@@ -646,7 +694,7 @@ export const ToolPage: React.FC<ToolPageProps> = ({ toolId, onBack, onSelectTool
                   HTML Source Input
                 </label>
                 <span className="text-[10px] text-emerald-600 font-mono font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/60">
-                  SSRF Hardened
+                  Safe Local Sandbox
                 </span>
               </div>
               <textarea
@@ -1030,7 +1078,7 @@ export const ToolPage: React.FC<ToolPageProps> = ({ toolId, onBack, onSelectTool
             originalSize={originalSize}
             onReset={handleReset}
             onProcess={handleProcess}
-            processButtonText={`Execute ${tool.name}`}
+            processButtonText={getActionVerb(tool.id, files.length)}
             canProcess={isTextTool || files.length > 0}
           />
         </div>
@@ -1185,22 +1233,32 @@ export const ToolPage: React.FC<ToolPageProps> = ({ toolId, onBack, onSelectTool
             </div>
           )}
 
-          {/* Live Execution Console Drawer */}
+          {/* Activity / Technical Details Accordion */}
           {executionLogs.length > 0 && (
-            <div className="bg-slate-900 text-slate-200 rounded-2xl p-4 sm:p-5 font-mono text-xs space-y-1 shadow-lg border border-slate-800">
-              <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-800 text-slate-400">
-                <span className="flex items-center gap-1.5 font-bold text-emerald-400">
-                  <Terminal className="w-4 h-4" /> WebAssembly Engine Inspector
+            <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-card">
+              <button
+                type="button"
+                onClick={() => setShowTechnicalDetails(!showTechnicalDetails)}
+                className="w-full flex items-center justify-between text-xs font-bold text-slate-700 hover:text-slate-900 cursor-pointer"
+              >
+                <span className="flex items-center gap-2">
+                  <Terminal className="w-4 h-4 text-slate-500" />
+                  <span>Processing Details ({executionLogs.length} steps)</span>
                 </span>
-                <span className="text-[10px] text-slate-500">Live Client Stream</span>
-              </div>
-              <div className="space-y-1 max-h-48 overflow-y-auto">
-                {executionLogs.map((line, i) => (
-                  <div key={i} className="text-slate-300">
-                    {line}
-                  </div>
-                ))}
-              </div>
+                <span className="text-[11px] font-mono text-slate-400">
+                  {showTechnicalDetails ? 'Hide details ↑' : 'Show details ↓'}
+                </span>
+              </button>
+
+              {showTechnicalDetails && (
+                <div className="mt-3 pt-3 border-t border-slate-100 font-mono text-[11px] text-slate-600 space-y-1 max-h-48 overflow-y-auto">
+                  {executionLogs.map((line, i) => (
+                    <div key={i} className="text-slate-600">
+                      {line}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>

@@ -68,7 +68,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     </span>
                   </div>
                   <span className="block text-[10px] text-slate-400 font-mono tracking-wider uppercase -mt-0.5">
-                    35 Verified In-Browser Tools
+                    100% In-Browser PDF Suite
                   </span>
                 </div>
               </button>

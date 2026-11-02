@@ -18,13 +18,13 @@ export const Footer: React.FC<FooterProps> = ({ onSelectTool }) => {
             </div>
             <div>
               <h4 className="text-sm font-bold text-white flex items-center gap-2">
-                <span>100% Client-Side Privacy Architecture</span>
+                <span>Private by Design • Zero Server Uploads</span>
                 <span className="text-[10px] font-mono bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded border border-emerald-500/30">
-                  ISO 32000 Compliant
+                  Client-Side Sandbox
                 </span>
               </h4>
               <p className="text-xs text-slate-300 max-w-xl mt-0.5 leading-relaxed">
-                Your confidential documents never travel across the internet. Cryptographic operations, stream compression, and rendering occur inside your browser's private memory sandbox.
+                All document rendering, compression, and conversion happen right here on your computer. Your files never touch our servers.
               </p>
             </div>
           </div>
@@ -32,7 +32,7 @@ export const Footer: React.FC<FooterProps> = ({ onSelectTool }) => {
           <div className="flex items-center gap-4 text-xs font-semibold text-slate-300">
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700">
               <Lock className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Zero Egress</span>
+              <span>Private</span>
             </div>
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700">
               <Cpu className="w-3.5 h-3.5 text-rose-400" />

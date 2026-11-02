@@ -1,5 +1,5 @@
 import React from 'react';
-import { Loader2, CheckCircle2, AlertTriangle, Download, RefreshCw, ArrowRight, FileCheck, ShieldCheck } from 'lucide-react';
+import { Loader2, CheckCircle2, AlertTriangle, Download, RefreshCw, ArrowRight, FileCheck, ShieldCheck, ArrowDownRight } from 'lucide-react';
 
 interface ProcessingStatusProps {
   status: 'idle' | 'processing' | 'success' | 'error';
@@ -27,7 +27,7 @@ export const ProcessingStatus: React.FC<ProcessingStatusProps> = ({
   originalSize,
   onReset,
   onProcess,
-  processButtonText = 'Execute Action',
+  processButtonText = 'Process Document',
   canProcess = true,
 }) => {
   const formatSize = (bytes?: number) => {
@@ -36,6 +36,11 @@ export const ProcessingStatus: React.FC<ProcessingStatusProps> = ({
     if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   };
+
+  const savingsPercent =
+    originalSize && outputSize && originalSize > outputSize
+      ? Math.round(((originalSize - outputSize) / originalSize) * 100)
+      : null;
 
   return (
     <div className="w-full">
@@ -51,24 +56,24 @@ export const ProcessingStatus: React.FC<ProcessingStatusProps> = ({
             <span>{processButtonText}</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </button>
-          <div className="mt-2 flex items-center justify-center gap-2 text-[11px] font-mono text-slate-400">
+          <div className="mt-2.5 flex items-center justify-center gap-2 text-[11px] font-medium text-slate-500">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Encrypted in memory • No files leave your device</span>
+            <span>Processed locally • No files leave your device</span>
           </div>
         </div>
       )}
 
-      {/* Processing State - Truthful progress */}
+      {/* Processing State */}
       {status === 'processing' && (
         <div className="bg-white rounded-2xl p-6 border border-slate-200 text-center shadow-card animate-in fade-in">
           <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center mx-auto mb-3 shadow-2xs">
             <Loader2 className="w-6 h-6 animate-spin" />
           </div>
           <h4 className="text-sm font-bold text-slate-900 mb-1">
-            {message || 'Processing document locally...'}
+            {message || 'Working on your document...'}
           </h4>
-          <p className="text-xs text-slate-500 mb-4 font-mono">
-            WebAssembly runtime memory • Zero remote network calls
+          <p className="text-xs text-slate-500 mb-4">
+            Processing directly on your device • Zero network uploads
           </p>
 
           {progress !== undefined && progress >= 0 && (
@@ -93,16 +98,25 @@ export const ProcessingStatus: React.FC<ProcessingStatusProps> = ({
           <div className="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-3 shadow-2xs">
             <CheckCircle2 className="w-7 h-7 stroke-[2.2]" />
           </div>
-          <h4 className="text-lg font-black text-slate-900 mb-1">Processing Complete!</h4>
-          <p className="text-xs text-slate-500 mb-5">
-            Your document was generated and verified in local memory.
+          <h4 className="text-lg font-black text-slate-900 mb-1">Ready to Download!</h4>
+          <p className="text-xs text-slate-500 mb-4">
+            Your file was generated and verified safely in your browser.
           </p>
 
-          {/* Size Metrics */}
+          {/* Metrics */}
           {outputSize !== undefined && (
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-100 text-slate-700 font-mono text-xs mb-6 border border-slate-200/70">
-              <FileCheck className="w-4 h-4 text-emerald-600" />
-              <span>Output Size: <strong>{formatSize(outputSize)}</strong></span>
+            <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-slate-100 text-slate-700 font-mono text-xs border border-slate-200/70">
+                <FileCheck className="w-3.5 h-3.5 text-emerald-600" />
+                <span>File Size: <strong>{formatSize(outputSize)}</strong></span>
+              </span>
+
+              {savingsPercent !== null && savingsPercent > 0 && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-emerald-100 text-emerald-800 font-semibold text-xs border border-emerald-200">
+                  <ArrowDownRight className="w-3.5 h-3.5" />
+                  <span>{savingsPercent}% smaller</span>
+                </span>
+              )}
             </div>
           )}
 
@@ -125,7 +139,7 @@ export const ProcessingStatus: React.FC<ProcessingStatusProps> = ({
                 className="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 font-bold text-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <RefreshCw className="w-4 h-4 text-slate-500" />
-                <span>Process Another File</span>
+                <span>Start Over</span>
               </button>
             )}
           </div>
@@ -138,9 +152,9 @@ export const ProcessingStatus: React.FC<ProcessingStatusProps> = ({
           <div className="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mx-auto mb-3 shadow-2xs">
             <AlertTriangle className="w-6 h-6 stroke-[2.2]" />
           </div>
-          <h4 className="text-sm font-bold text-slate-900 mb-1">Execution Error</h4>
-          <p className="text-xs text-rose-700 font-medium mb-4 max-w-md mx-auto">
-            {error || 'An unexpected error occurred while processing the file.'}
+          <h4 className="text-sm font-bold text-slate-900 mb-1">Unable to Process Document</h4>
+          <p className="text-xs text-rose-700 font-medium mb-4 max-w-md mx-auto leading-relaxed">
+            {error || 'An unexpected issue occurred while processing the file. Please ensure the document is not corrupted or password-protected.'}
           </p>
 
           {onReset && (

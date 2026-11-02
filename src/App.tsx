@@ -8,6 +8,7 @@ import { PDF_TOOLS } from './types/tools';
 export const App: React.FC = () => {
   const [currentToolId, setCurrentToolId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [preloadedFiles, setPreloadedFiles] = useState<File[]>([]);
 
   // Handle URL route synchronization
   useEffect(() => {
@@ -29,8 +30,13 @@ export const App: React.FC = () => {
     return () => window.removeEventListener('popstate', handleLocationChange);
   }, []);
 
-  const handleSelectTool = (toolId: string | null) => {
+  const handleSelectTool = (toolId: string | null, files?: File[]) => {
     setCurrentToolId(toolId);
+    if (files && files.length > 0) {
+      setPreloadedFiles(files);
+    } else {
+      setPreloadedFiles([]);
+    }
     if (toolId) {
       window.history.pushState({}, '', `/tools/${toolId}`);
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -41,7 +47,7 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FBFBFC]">
+    <div className="min-h-screen flex flex-col bg-[#F8FAFC]">
       <Navbar
         onSelectTool={handleSelectTool}
         currentToolId={currentToolId}
@@ -55,6 +61,7 @@ export const App: React.FC = () => {
             toolId={currentToolId}
             onBack={() => handleSelectTool(null)}
             onSelectTool={handleSelectTool}
+            preloadedFiles={preloadedFiles}
           />
         ) : (
           <HomePage
