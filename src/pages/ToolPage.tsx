@@ -655,9 +655,9 @@ export const ToolPage: React.FC<ToolPageProps> = ({ toolId, onBack, onSelectTool
           <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/90 shadow-card">
             <div className="flex items-start gap-4">
               <div
-                className={`w-12 h-12 rounded-xl ${tool.iconBg} ${tool.iconColor} flex items-center justify-center flex-shrink-0 shadow-xs`}
+                className="w-12 h-12 rounded-xl bg-slate-100/90 text-slate-800 border border-slate-200/90 flex items-center justify-center flex-shrink-0 shadow-2xs"
               >
-                <Settings2 className="w-6 h-6 stroke-[2.2]" />
+                <Settings2 className="w-6 h-6 stroke-[2.2] text-rose-600" />
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2 mb-1">

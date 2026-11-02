@@ -8,59 +8,82 @@
   :root {
     --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    --surface-ground: #F8FAFC;
+    --surface-card: #FFFFFF;
+    --border-hairline: rgba(226, 232, 240, 0.9);
   }
 
   body {
     font-family: var(--font-sans);
-    @apply bg-[#F8FAFC] text-slate-900 antialiased;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    background-color: var(--surface-ground);
+    color: #0F172A;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01", "ss02";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   code, pre, .font-mono {
     font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
   }
 }
 
-/* Background grid pattern */
+/* Architectural Subtle Dot Grid */
 .bg-grid-slate {
-  background-image: radial-gradient(rgba(148, 163, 184, 0.22) 1px, transparent 1px);
-  background-size: 24px 24px;
+  background-image: radial-gradient(rgba(148, 163, 184, 0.20) 1px, transparent 1px);
+  background-size: 20px 20px;
 }
 
-/* Custom crisp scrollbars */
+/* Subtle Architectural Grid Lines for Hero / Manifesto */
+.bg-architectural-grid {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+}
+
+/* Custom Minimalist Scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #CBD5E1;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #94A3B8;
 }
 
-/* Tool card micro-animations */
+/* Precise Tool Card Transition */
 .tool-card-transition {
-  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .tool-card-transition:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
 }
 
-/* Pulsing beacon */
+/* Accessible & Crisp Focus Rings */
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px rgba(225, 29, 72, 0.45);
+}
+
+/* Pulsing Status Beacon */
 @keyframes beacon {
   0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.92); }
+  50% { opacity: 0.35; transform: scale(0.92); }
 }
 
 .animate-beacon {
-  animation: beacon 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  animation: beacon 2.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }

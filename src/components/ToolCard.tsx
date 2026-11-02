@@ -35,7 +35,7 @@ import {
   Workflow,
   Lock,
   ArrowRight,
-  ShieldCheck,
+  Cpu,
 } from 'lucide-react';
 import { PDFTool } from '../types/tools';
 
@@ -76,6 +76,21 @@ const ICON_MAP: Record<string, React.ElementType> = {
   Workflow,
 };
 
+const getEngineTag = (id: string): string => {
+  if (id.includes('ocr')) return 'Tesseract WASM';
+  if (id.includes('word')) return 'DOCX Parser';
+  if (id.includes('excel')) return 'SheetJS Grid';
+  if (id.includes('powerpoint')) return 'PPTXgen';
+  if (id.includes('html')) return 'DOM Canvas';
+  if (id.includes('scan')) return 'WebRTC';
+  if (id.includes('ai') || id.includes('translate')) return 'Gemini / Local';
+  if (id.includes('workflow')) return 'Pipeline';
+  if (id.includes('markdown')) return 'Marked AST';
+  if (id.includes('compare')) return 'Canvas Diff';
+  if (id.includes('forms')) return 'AcroForm';
+  return 'pdf-lib 1.17';
+};
+
 interface ToolCardProps {
   tool: PDFTool;
   onSelect: (toolId: string) => void;
@@ -91,20 +106,19 @@ export const ToolCard: React.FC<ToolCardProps> = ({
 }) => {
   const IconComponent = ICON_MAP[tool.icon] || FileText;
   const toolNum = String(index + 1).padStart(2, '0');
+  const engineTag = getEngineTag(tool.id);
 
-  // List view (Mobile-first view matching user's original screenshot layout)
+  // List View (Minimalist Linear Row)
   if (viewMode === 'list') {
     return (
       <button
         type="button"
         onClick={() => onSelect(tool.id)}
-        className="group w-full text-left bg-white rounded-2xl p-4 border border-slate-200/80 hover:border-rose-400 shadow-2xs hover:shadow-card transition-all flex items-center justify-between gap-4 cursor-pointer focus:outline-none focus:ring-2 focus:ring-rose-500/20"
+        className="group w-full text-left bg-white rounded-2xl p-4 border border-slate-200/80 hover:border-slate-300 shadow-2xs hover:shadow-card tool-card-transition flex items-center justify-between gap-4 cursor-pointer focus:outline-none focus:ring-2 focus:ring-rose-500/20"
       >
         <div className="flex items-center gap-3.5 min-w-0">
-          <div
-            className={`w-11 h-11 rounded-xl ${tool.iconBg} ${tool.iconColor} flex items-center justify-center flex-shrink-0 shadow-sm group-hover:scale-105 transition-transform`}
-          >
-            <IconComponent className="w-5 h-5 stroke-[2.2]" />
+          <div className="w-10 h-10 rounded-xl bg-slate-100/90 text-slate-700 border border-slate-200/80 flex items-center justify-center flex-shrink-0 group-hover:bg-rose-50 group-hover:text-rose-600 group-hover:border-rose-200/80 transition-colors shadow-2xs">
+            <IconComponent className="w-4 h-4 stroke-[2.2]" />
           </div>
 
           <div className="min-w-0">
@@ -118,6 +132,10 @@ export const ToolCard: React.FC<ToolCardProps> = ({
                   {tool.badge}
                 </span>
               )}
+              <span className="hidden md:inline-flex items-center gap-1 text-[10px] font-mono text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded border border-slate-200/50">
+                <Cpu className="w-2.5 h-2.5 text-slate-400" />
+                {engineTag}
+              </span>
             </div>
             <p className="text-xs text-slate-500 truncate mt-0.5 max-w-sm sm:max-w-md">
               {tool.description}
@@ -144,12 +162,12 @@ export const ToolCard: React.FC<ToolCardProps> = ({
     );
   }
 
-  // Grid view (Editorial Bento layout)
+  // Grid View (Swiss / Bento Tile Layout)
   return (
     <button
       type="button"
       onClick={() => onSelect(tool.id)}
-      className="group w-full text-left bg-white rounded-2xl p-5 border border-slate-200/90 shadow-card hover:shadow-card-hover hover:border-slate-300/90 tool-card-transition flex flex-col justify-between cursor-pointer focus:outline-none focus:ring-2 focus:ring-rose-500/20 relative overflow-hidden"
+      className="group w-full text-left bg-white rounded-2xl p-5 border border-slate-200/80 shadow-2xs hover:shadow-card hover:border-slate-300 tool-card-transition flex flex-col justify-between cursor-pointer focus:outline-none focus:ring-2 focus:ring-rose-500/20 relative overflow-hidden"
     >
       {/* Top subtle hairline accent on hover */}
       <div className="absolute top-0 left-0 right-0 h-0.5 bg-rose-600 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -157,10 +175,8 @@ export const ToolCard: React.FC<ToolCardProps> = ({
       <div>
         {/* Top Header: Icon & Metadata Number */}
         <div className="flex items-start justify-between gap-3 mb-3.5">
-          <div
-            className={`w-11 h-11 rounded-xl ${tool.iconBg} ${tool.iconColor} flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform duration-200`}
-          >
-            <IconComponent className="w-5 h-5 stroke-[2.2]" />
+          <div className="w-10 h-10 rounded-xl bg-slate-100/90 text-slate-700 border border-slate-200/80 flex items-center justify-center group-hover:bg-rose-50 group-hover:text-rose-600 group-hover:border-rose-200/80 transition-colors shadow-2xs">
+            <IconComponent className="w-4 h-4 stroke-[2.2]" />
           </div>
 
           <div className="flex items-center gap-1.5">
@@ -176,7 +192,7 @@ export const ToolCard: React.FC<ToolCardProps> = ({
         </div>
 
         {/* Title */}
-        <h3 className="text-base font-extrabold text-slate-900 group-hover:text-rose-600 transition-colors mb-1.5 tracking-tight leading-snug">
+        <h3 className="text-sm sm:text-base font-bold text-slate-900 group-hover:text-rose-600 transition-colors mb-1 tracking-tight leading-snug">
           {tool.name}
         </h3>
 
@@ -186,23 +202,23 @@ export const ToolCard: React.FC<ToolCardProps> = ({
         </p>
       </div>
 
-      {/* Footer: Format Pills & Action Arrow */}
-      <div className="pt-3 border-t border-slate-100/90 flex items-center justify-between">
-        <div className="flex items-center gap-1">
-          {tool.accept.slice(0, 2).map((ext) => (
+      {/* Footer: Format Pills, Engine Tag & Action Arrow */}
+      <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+        <div className="flex items-center gap-1.5 overflow-hidden">
+          <span className="text-[10px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded truncate max-w-[110px]">
+            {engineTag}
+          </span>
+          {tool.accept.slice(0, 1).map((ext) => (
             <span
               key={ext}
-              className="text-[10px] font-mono font-medium px-1.5 py-0.5 rounded bg-slate-100 text-slate-600"
+              className="text-[10px] font-mono text-slate-400 hidden sm:inline"
             >
               {ext}
             </span>
           ))}
-          {tool.accept.length > 2 && (
-            <span className="text-[10px] text-slate-400 font-mono">+{tool.accept.length - 2}</span>
-          )}
         </div>
 
-        <span className="text-xs font-bold text-slate-600 group-hover:text-rose-600 group-hover:translate-x-0.5 transition-all flex items-center gap-1">
+        <span className="text-xs font-bold text-slate-600 group-hover:text-rose-600 group-hover:translate-x-0.5 transition-all flex items-center gap-1 flex-shrink-0">
           Open <ArrowRight className="w-3.5 h-3.5" />
         </span>
       </div>

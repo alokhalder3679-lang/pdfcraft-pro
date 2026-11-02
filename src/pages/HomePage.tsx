@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { PDF_TOOLS, PDFTool } from '../types/tools';
 import { ToolCard } from '../components/ToolCard';
 import {
@@ -19,6 +19,10 @@ import {
   CheckCircle2,
   Heart,
   Github,
+  HardDrive,
+  Check,
+  Eye,
+  SlidersHorizontal,
 } from 'lucide-react';
 
 interface HomePageProps {
@@ -33,22 +37,26 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectTool, searchQuery })
   const [isDragging, setIsDragging] = useState<boolean>(false);
 
   const categories = [
-    { id: 'all', label: 'All 35 Tools', count: PDF_TOOLS.length },
+    { id: 'all', label: 'All Tools', count: PDF_TOOLS.length },
     { id: 'organize', label: 'Organize & Pages', count: PDF_TOOLS.filter((t) => t.category === 'organize').length },
-    { id: 'convert-from-pdf', label: 'Convert from PDF', count: PDF_TOOLS.filter((t) => t.category === 'convert-from-pdf').length },
     { id: 'convert-to-pdf', label: 'Convert to PDF', count: PDF_TOOLS.filter((t) => t.category === 'convert-to-pdf').length },
+    { id: 'convert-from-pdf', label: 'Convert from PDF', count: PDF_TOOLS.filter((t) => t.category === 'convert-from-pdf').length },
     { id: 'edit-security', label: 'Edit & Security', count: PDF_TOOLS.filter((t) => t.category === 'edit-security').length },
     { id: 'advanced', label: 'AI & Utilities', count: PDF_TOOLS.filter((t) => t.category === 'advanced').length },
   ];
 
-  const filteredTools = PDF_TOOLS.filter((tool) => {
-    const matchesSearch =
-      tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      tool.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      tool.accept.some((ext) => ext.toLowerCase().includes(searchQuery.toLowerCase()));
-    const matchesCategory = selectedCategory === 'all' || tool.category === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
+  const filteredTools = useMemo(() => {
+    return PDF_TOOLS.filter((tool) => {
+      const q = searchQuery.toLowerCase().trim();
+      const matchesSearch =
+        !q ||
+        tool.name.toLowerCase().includes(q) ||
+        tool.description.toLowerCase().includes(q) ||
+        tool.accept.some((ext) => ext.toLowerCase().includes(q));
+      const matchesCategory = selectedCategory === 'all' || tool.category === selectedCategory;
+      return matchesSearch && matchesCategory;
+    });
+  }, [searchQuery, selectedCategory]);
 
   const handleHeroDrop = (e: React.DragEvent) => {
     e.preventDefault();
@@ -64,23 +72,63 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectTool, searchQuery })
     return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
   };
 
+  // Compute recommended tools based on dropped file type
+  const recommendedActions = useMemo(() => {
+    if (!droppedFile) return [];
+    const name = droppedFile.name.toLowerCase();
+    if (name.endsWith('.pdf')) {
+      return [
+        { name: 'Compress PDF', id: 'compress-pdf', desc: 'Shrink file size without losing clarity' },
+        { name: 'PDF to Word', id: 'pdf-to-word', desc: 'Extract editable DOCX manuscript' },
+        { name: 'Split Pages', id: 'split-pdf', desc: 'Extract or separate individual pages' },
+        { name: 'Sign Document', id: 'sign-pdf', desc: 'Place handwritten signature & initials' },
+        { name: 'AI Summarizer', id: 'ai-summarizer', desc: 'Extract executive summary & takeaways' },
+        { name: 'Organize Pages', id: 'organize-pdf', desc: 'Drag, rotate, and reorder page grid' },
+      ];
+    }
+    if (name.endsWith('.docx') || name.endsWith('.doc')) {
+      return [{ name: 'Word to PDF', id: 'word-to-pdf', desc: 'Convert DOCX manuscript to PDF' }];
+    }
+    if (name.endsWith('.xlsx') || name.endsWith('.xls') || name.endsWith('.csv')) {
+      return [{ name: 'Excel to PDF', id: 'excel-to-pdf', desc: 'Format spreadsheet tables to PDF' }];
+    }
+    if (name.endsWith('.pptx') || name.endsWith('.ppt')) {
+      return [{ name: 'PowerPoint to PDF', id: 'powerpoint-to-pdf', desc: 'Convert presentation slides to PDF' }];
+    }
+    if (name.endsWith('.jpg') || name.endsWith('.jpeg') || name.endsWith('.png') || name.endsWith('.webp')) {
+      return [{ name: 'JPG to PDF', id: 'jpg-to-pdf', desc: 'Assemble image into standard PDF' }];
+    }
+    if (name.endsWith('.md') || name.endsWith('.markdown')) {
+      return [{ name: 'Markdown to PDF', id: 'markdown-to-pdf', desc: 'Render Markdown AST to formatted PDF' }];
+    }
+    if (name.endsWith('.html') || name.endsWith('.htm')) {
+      return [{ name: 'HTML to PDF', id: 'html-to-pdf', desc: 'Sanitize and convert HTML to PDF' }];
+    }
+    return [
+      { name: 'Compress PDF', id: 'compress-pdf', desc: 'Optimize document' },
+      { name: 'Merge PDF', id: 'merge-pdf', desc: 'Combine multiple documents' },
+    ];
+  }, [droppedFile]);
+
   return (
     <div className="min-h-screen">
-      {/* Friendly Privacy Notice & Quick Shortcuts */}
-      <section className="border-b border-slate-200/80 bg-white/70 backdrop-blur-xs py-2.5 px-4 sm:px-6">
+      {/* Top Telemetry & Status Ribbon */}
+      <section className="border-b border-slate-200/80 bg-white/80 backdrop-blur-sm py-2 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs">
-          <div className="flex items-center gap-2 font-medium text-slate-600">
-            <span className="flex h-2 w-2 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          <div className="flex items-center gap-3 font-medium text-slate-600">
+            <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/70 font-semibold text-[11px]">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-beacon"></span>
+              Client Sandbox Active
             </span>
-            <span className="font-semibold text-slate-800">100% Private:</span>
-            <span>Your files never leave your browser</span>
+            <span className="hidden sm:inline text-slate-400">•</span>
+            <span className="hidden sm:inline text-slate-500">
+              Zero network uploads • All 35 tools execute in WebAssembly
+            </span>
           </div>
 
           <div className="flex items-center gap-2 overflow-x-auto scrollbar-none">
-            <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider hidden sm:inline">
-              Popular Tools:
+            <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider hidden md:inline">
+              Quick Shortcuts:
             </span>
             {[
               { id: 'merge-pdf', name: 'Merge', icon: Layers },
@@ -95,7 +143,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectTool, searchQuery })
                   key={shortcut.id}
                   type="button"
                   onClick={() => onSelectTool(shortcut.id)}
-                  className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200 border border-transparent text-slate-700 font-semibold transition-all flex items-center gap-1.5 cursor-pointer"
+                  className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200 border border-transparent text-slate-700 font-semibold transition-all flex items-center gap-1.5 cursor-pointer text-xs shadow-2xs"
                 >
                   <Icon className="w-3.5 h-3.5" />
                   <span>{shortcut.name}</span>
@@ -106,22 +154,26 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectTool, searchQuery })
         </div>
       </section>
 
-      {/* Hero Workbench Section */}
-      <section className="pt-10 pb-8 sm:pt-16 sm:pb-12 px-4 max-w-5xl mx-auto text-center">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-rose-50 border border-rose-200/70 text-rose-700 text-xs font-semibold mb-4 shadow-2xs">
-          <Sparkles className="w-3.5 h-3.5 text-rose-600" />
-          <span>Complete 35-Tool Document Suite</span>
+      {/* Hero Workstation Section */}
+      <section className="pt-12 pb-10 sm:pt-16 sm:pb-14 px-4 max-w-6xl mx-auto">
+        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-800 text-xs font-semibold mb-4 shadow-2xs">
+            <Cpu className="w-3.5 h-3.5 text-rose-600" />
+            <span>100% In-Browser WebAssembly Architecture</span>
+          </div>
+
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.1] mb-4">
+            Precision document tools. <br className="hidden sm:inline" />
+            <span className="text-rose-600">Built for your browser.</span>
+          </h1>
+
+          <p className="text-sm sm:text-base text-slate-600 max-w-2xl mx-auto leading-relaxed font-normal">
+            Merge, split, compress, convert, sign, and edit files entirely inside your device's memory.
+            Your bank statements, legal contracts, and personal IDs never leave your computer.
+          </p>
         </div>
 
-        <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight leading-tight sm:leading-none mb-4">
-          Every PDF tool you need. <span className="text-rose-600">Right in your browser.</span>
-        </h1>
-
-        <p className="text-sm sm:text-base text-slate-600 max-w-2xl mx-auto leading-relaxed mb-8 font-medium">
-          Merge, split, compress, convert, sign, and edit documents privately. No server uploads, no accounts to create, and zero waiting.
-        </p>
-
-        {/* Interactive Instant Dropzone in Hero */}
+        {/* Tactile Document Desk / Drop Workbench */}
         <div
           onDragOver={(e) => {
             e.preventDefault();
@@ -129,29 +181,30 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectTool, searchQuery })
           }}
           onDragLeave={() => setIsDragging(false)}
           onDrop={handleHeroDrop}
-          className={`max-w-2xl mx-auto rounded-3xl p-6 sm:p-8 transition-all duration-200 text-left ${
+          className={`max-w-3xl mx-auto rounded-3xl p-6 sm:p-8 transition-all duration-200 ${
             isDragging
-              ? 'border-2 border-dashed border-rose-500 bg-rose-50/70 scale-[1.01]'
+              ? 'border-2 border-dashed border-rose-500 bg-rose-50/60 scale-[1.01]'
               : 'border border-slate-200/90 bg-white shadow-card hover:shadow-card-hover'
           }`}
         >
           {!droppedFile ? (
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-5">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
               <div className="flex items-center gap-4 text-left">
-                <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center flex-shrink-0 shadow-2xs">
+                <div className="w-13 h-13 rounded-2xl bg-rose-50 text-rose-600 border border-rose-100 flex items-center justify-center flex-shrink-0 shadow-2xs">
                   <UploadCloud className="w-6 h-6 stroke-[2.2]" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-slate-900">
-                    Quick Document Workbench
-                  </h4>
-                  <p className="text-xs text-slate-500 mt-0.5">
-                    Drop a file here to inspect and choose what to do with it
+                  <h3 className="text-base font-bold text-slate-900">
+                    Interactive Document Desk
+                  </h3>
+                  <p className="text-xs text-slate-500 mt-0.5 max-w-md leading-relaxed">
+                    Drop any PDF, Office file, or image here. We'll inspect it locally and suggest the right tool instantly.
                   </p>
                 </div>
               </div>
 
-              <label className="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all cursor-pointer whitespace-nowrap shadow-sm">
+              <label className="px-5 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all cursor-pointer whitespace-nowrap shadow-sm hover:shadow-md flex items-center gap-2 flex-shrink-0">
+                <FileText className="w-4 h-4 text-slate-300" />
                 <span>Select Document</span>
                 <input
                   type="file"
@@ -165,78 +218,89 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectTool, searchQuery })
               </label>
             </div>
           ) : (
-            <div className="space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0">
-                    <File className="w-5 h-5" />
+            <div className="space-y-5 animate-in fade-in duration-150">
+              {/* File Telemetry Header */}
+              <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+                <div className="flex items-center gap-3.5 min-w-0">
+                  <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200/70 flex items-center justify-center flex-shrink-0">
+                    <File className="w-6 h-6 stroke-[2]" />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-sm font-bold text-slate-900 truncate">{droppedFile.name}</p>
-                    <p className="text-xs text-slate-500 font-mono">{formatSize(droppedFile.size)}</p>
+                    <p className="text-sm font-bold text-slate-900 truncate max-w-xs sm:max-w-md">
+                      {droppedFile.name}
+                    </p>
+                    <div className="flex items-center gap-2 mt-0.5 text-xs text-slate-500 font-mono">
+                      <span>{formatSize(droppedFile.size)}</span>
+                      <span>•</span>
+                      <span className="text-emerald-700 font-semibold">Local Memory Verified</span>
+                    </div>
                   </div>
                 </div>
 
                 <button
                   type="button"
                   onClick={() => setDroppedFile(null)}
-                  className="text-xs font-bold text-slate-400 hover:text-rose-600 cursor-pointer"
+                  className="px-3 py-1.5 text-xs font-semibold text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition-colors cursor-pointer"
                 >
                   Clear File
                 </button>
               </div>
 
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="text-xs font-bold text-slate-700 mr-1">Choose Action:</span>
-                {[
-                  { name: 'Compress File', id: 'compress-pdf' },
-                  { name: 'Convert to Word', id: 'pdf-to-word' },
-                  { name: 'Split Pages', id: 'split-pdf' },
-                  { name: 'Sign Document', id: 'sign-pdf' },
-                  { name: 'Protect Document', id: 'protect-pdf' },
-                  { name: 'AI Summarize', id: 'ai-summarizer' },
-                  { name: 'Rotate Pages', id: 'rotate-pdf' },
-                ].map((act) => (
-                  <button
-                    key={act.id}
-                    type="button"
-                    onClick={() => onSelectTool(act.id, [droppedFile])}
-                    className="px-3.5 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition-all cursor-pointer shadow-xs flex items-center gap-1.5 group"
-                  >
-                    <span>{act.name}</span>
-                    <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
-                  </button>
-                ))}
+              {/* Recommended Tool Actions Grid */}
+              <div>
+                <span className="text-xs font-bold text-slate-700 block mb-2.5">
+                  Suggested Actions for this Document:
+                </span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+                  {recommendedActions.map((act) => (
+                    <button
+                      key={act.id}
+                      type="button"
+                      onClick={() => onSelectTool(act.id, [droppedFile])}
+                      className="p-3 rounded-xl bg-slate-50 hover:bg-rose-50 hover:border-rose-200 border border-slate-200/80 text-left transition-all cursor-pointer group flex flex-col justify-between"
+                    >
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-xs font-bold text-slate-900 group-hover:text-rose-600 transition-colors">
+                          {act.name}
+                        </span>
+                        <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-rose-600 group-hover:translate-x-0.5 transition-all" />
+                      </div>
+                      <span className="text-[11px] text-slate-500 leading-snug line-clamp-1">
+                        {act.desc}
+                      </span>
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           )}
         </div>
 
-        {/* Human Trust & Privacy Guarantee Badges */}
-        <div className="mt-7 flex flex-wrap items-center justify-center gap-2.5 text-xs font-medium text-slate-600">
-          <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-slate-200/80 shadow-2xs">
-            <ShieldCheck className="w-4 h-4 text-emerald-600" /> Never leaves your computer
+        {/* Precision Guarantees Row */}
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-xs font-medium text-slate-600">
+          <span className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white border border-slate-200/90 shadow-2xs">
+            <Lock className="w-3.5 h-3.5 text-emerald-600" /> 100% In-Browser Sandbox
           </span>
-          <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-slate-200/80 shadow-2xs">
-            <Zap className="w-4 h-4 text-amber-500" /> Instant client-side speed
+          <span className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white border border-slate-200/90 shadow-2xs">
+            <Zap className="w-3.5 h-3.5 text-amber-500" /> Zero Upload Bottlenecks
           </span>
-          <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-slate-200/80 shadow-2xs">
-            <CheckCircle2 className="w-4 h-4 text-rose-600" /> Free & Open Source
+          <span className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white border border-slate-200/90 shadow-2xs">
+            <CheckCircle2 className="w-3.5 h-3.5 text-rose-600" /> Free & Open Source (MIT)
           </span>
         </div>
       </section>
 
       {/* Filter Category Toolbar & View Mode Switcher */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200/80">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-slate-200/80">
           {/* Category Tabs */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none no-scrollbar">
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none no-scrollbar">
             {categories.map((cat) => (
               <button
                 key={cat.id}
                 type="button"
                 onClick={() => setSelectedCategory(cat.id)}
-                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-2 ${
                   selectedCategory === cat.id
                     ? 'bg-slate-900 text-white shadow-xs'
                     : 'bg-white hover:bg-slate-100 text-slate-600 border border-slate-200/80'
@@ -254,34 +318,40 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectTool, searchQuery })
             ))}
           </div>
 
-          {/* View Mode Toggle (Grid vs. List) */}
-          <div className="flex items-center gap-1 self-end sm:self-auto bg-white p-1 rounded-xl border border-slate-200/80 shadow-2xs">
-            <button
-              type="button"
-              onClick={() => setViewMode('grid')}
-              title="Grid View"
-              className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
-                viewMode === 'grid' ? 'bg-slate-900 text-white shadow-2xs' : 'text-slate-500 hover:text-slate-800'
-              }`}
-            >
-              <LayoutGrid className="w-4 h-4" />
-            </button>
-            <button
-              type="button"
-              onClick={() => setViewMode('list')}
-              title="List View"
-              className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
-                viewMode === 'list' ? 'bg-slate-900 text-white shadow-2xs' : 'text-slate-500 hover:text-slate-800'
-              }`}
-            >
-              <List className="w-4 h-4" />
-            </button>
+          {/* Results Metric & View Mode Switcher */}
+          <div className="flex items-center justify-between sm:justify-end gap-3 self-stretch sm:self-auto">
+            <span className="text-xs text-slate-400 font-mono">
+              Showing {filteredTools.length} of {PDF_TOOLS.length} tools
+            </span>
+
+            <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-slate-200/80 shadow-2xs">
+              <button
+                type="button"
+                onClick={() => setViewMode('grid')}
+                title="Bento Grid View"
+                className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+                  viewMode === 'grid' ? 'bg-slate-900 text-white shadow-2xs' : 'text-slate-500 hover:text-slate-800'
+                }`}
+              >
+                <LayoutGrid className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode('list')}
+                title="Linear List View"
+                className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+                  viewMode === 'list' ? 'bg-slate-900 text-white shadow-2xs' : 'text-slate-500 hover:text-slate-800'
+                }`}
+              >
+                <List className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Tools Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         {filteredTools.length === 0 ? (
           <div className="bg-white rounded-3xl p-12 text-center border border-slate-200 my-8">
             <p className="text-slate-700 text-sm font-bold">
@@ -324,49 +394,58 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectTool, searchQuery })
         )}
       </section>
 
-      {/* Why In-Browser Processing Matters (Human Touch & Trust Card) */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        <div className="bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 rounded-3xl p-8 sm:p-12 text-white shadow-xl relative overflow-hidden">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-rose-300 text-xs font-semibold mb-4 border border-white/10">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Why We Built PDFCraft Pro</span>
+      {/* Architectural Security Manifesto Section (Deep Obsidian Tone) */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+        <div className="bg-[#090D16] rounded-3xl p-8 sm:p-12 lg:p-16 text-white shadow-2xl relative overflow-hidden border border-slate-800 bg-architectural-grid">
+          <div className="max-w-3xl relative z-10">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 text-rose-300 text-xs font-semibold mb-5 border border-slate-700">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Architectural Privacy Manifesto</span>
             </div>
 
-            <h3 className="text-2xl sm:text-3xl font-black tracking-tight mb-3">
-              Your documents are confidential. They should stay that way.
-            </h3>
+            <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight mb-4 text-white leading-tight">
+              Confidential documents should remain on your machine.
+            </h2>
 
-            <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-8">
-              Most online PDF converters silently upload your bank statements, legal contracts, and medical records to third-party cloud servers. We built PDFCraft Pro to run 100% locally in your web browser using modern WebAssembly. No files ever leave your computer.
+            <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-10 font-normal">
+              Every day, sensitive tax records, medical charts, and confidential enterprise NDAs are uploaded to opaque cloud converters. PDFCraft Pro was engineered from first principles with local-first WebAssembly execution: your documents never touch a remote server, cannot be intercepted, and are processed with the full horsepower of your own CPU.
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-4 border-t border-slate-700/60 text-left">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-6 border-t border-slate-800 text-left">
               <div>
-                <h4 className="text-sm font-bold text-white mb-1 flex items-center gap-2">
-                  <Lock className="w-4 h-4 text-emerald-400" /> Total Privacy
-                </h4>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  Zero server transmission. Process sensitive contracts and IDs without NDA violations.
-                </p>
+                <span className="block text-2xl sm:text-3xl font-extrabold font-mono text-white mb-0.5">
+                  0 Bytes
+                </span>
+                <span className="text-xs text-slate-400 font-medium">
+                  Network Data Egress
+                </span>
               </div>
 
               <div>
-                <h4 className="text-sm font-bold text-white mb-1 flex items-center gap-2">
-                  <Zap className="w-4 h-4 text-amber-400" /> Blazing Fast
-                </h4>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  No slow uploads or queue wait times. Large PDFs process at the speed of your device's CPU.
-                </p>
+                <span className="block text-2xl sm:text-3xl font-extrabold font-mono text-white mb-0.5">
+                  100%
+                </span>
+                <span className="text-xs text-slate-400 font-medium">
+                  Client WebAssembly
+                </span>
               </div>
 
               <div>
-                <h4 className="text-sm font-bold text-white mb-1 flex items-center gap-2">
-                  <Heart className="w-4 h-4 text-rose-400" /> Free Forever
-                </h4>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  Open source software built for the community. No premium paywalls or subscription traps.
-                </p>
+                <span className="block text-2xl sm:text-3xl font-extrabold font-mono text-white mb-0.5">
+                  35 Tools
+                </span>
+                <span className="text-xs text-slate-400 font-medium">
+                  Zero Paywalls
+                </span>
+              </div>
+
+              <div>
+                <span className="block text-2xl sm:text-3xl font-extrabold font-mono text-white mb-0.5">
+                  MIT
+                </span>
+                <span className="text-xs text-slate-400 font-medium">
+                  Open Source Code
+                </span>
               </div>
             </div>
           </div>

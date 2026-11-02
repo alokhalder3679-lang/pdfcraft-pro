@@ -171,6 +171,18 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <span>Support & Setup</span>
                 </button>
               )}
+
+              {/* GitHub Link */}
+              <a
+                href="https://github.com/alokhalder3679-lang/pdfcraft-pro"
+                target="_blank"
+                rel="noreferrer"
+                className="p-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100/80 transition-all cursor-pointer"
+                title="GitHub Repository (Open Source)"
+                aria-label="GitHub Repository"
+              >
+                <Github className="w-4 h-4" />
+              </a>
             </div>
 
             {/* Mobile Actions */}

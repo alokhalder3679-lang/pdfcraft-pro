@@ -1,5 +1,5 @@
 import React from 'react';
-import { FileText, ShieldCheck, Lock, Cpu, Heart, Command, ArrowRight, Mail, Globe } from 'lucide-react';
+import { FileText, ShieldCheck, Lock, Cpu, Heart, Command, ArrowRight, Mail, Globe, Github } from 'lucide-react';
 import { PDF_TOOLS } from '../types/tools';
 
 interface FooterProps {
@@ -9,41 +9,43 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ onSelectTool, onOpenContact }) => {
   return (
-    <footer className="bg-white border-t border-slate-200/90 mt-20 pt-12 pb-8">
+    <footer className="bg-white border-t border-slate-200/90 pt-14 pb-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Security & Privacy Highlight Banner */}
-        <div className="mb-12 p-6 rounded-2xl bg-slate-900 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-card">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-rose-600/20 text-rose-400 flex items-center justify-center flex-shrink-0 border border-rose-500/30">
-              <ShieldCheck className="w-6 h-6 stroke-[2.2]" />
+        {/* Brand Summary Row */}
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-10 border-b border-slate-100">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-rose-600 to-rose-700 text-white flex items-center justify-center font-bold shadow-xs">
+              <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="8" y1="13" x2="16" y2="13" />
+                <line x1="8" y1="17" x2="13" y2="17" />
+              </svg>
             </div>
             <div>
-              <h4 className="text-sm font-bold text-white flex items-center gap-2">
-                <span>Private by Design • Zero Server Uploads</span>
-                <span className="text-[10px] font-mono bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded border border-emerald-500/30">
-                  Client-Side Sandbox
-                </span>
-              </h4>
-              <p className="text-xs text-slate-300 max-w-xl mt-0.5 leading-relaxed">
-                All document rendering, compression, and conversion happen right here on your computer. Your files never touch our servers.
+              <span className="text-sm font-extrabold text-slate-900 tracking-tight">
+                PDFCraft Pro
+              </span>
+              <p className="text-xs text-slate-400">
+                100% In-Browser Privacy-First PDF Toolkit • Zero Server Transmission
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-4 text-xs font-semibold text-slate-300">
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700">
-              <Lock className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Private</span>
-            </div>
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700">
-              <Cpu className="w-3.5 h-3.5 text-rose-400" />
+          <div className="flex items-center gap-3 text-xs font-semibold text-slate-600">
+            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-700">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Local Sandbox</span>
+            </span>
+            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-700">
+              <Cpu className="w-3.5 h-3.5 text-rose-600" />
               <span>WebAssembly</span>
-            </div>
+            </span>
           </div>
         </div>
 
         {/* 4 Tool Categorization Columns */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pb-10 border-b border-slate-100">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-10 border-b border-slate-100">
           <div>
             <h5 className="text-xs font-extrabold text-slate-900 uppercase tracking-wider mb-3">
               Organize & Pages
@@ -69,10 +71,10 @@ export const Footer: React.FC<FooterProps> = ({ onSelectTool, onOpenContact }) =
 
           <div>
             <h5 className="text-xs font-extrabold text-slate-900 uppercase tracking-wider mb-3">
-              Convert From PDF
+              Convert To PDF
             </h5>
             <ul className="space-y-2 text-xs text-slate-600 font-medium">
-              {['pdf-to-word', 'pdf-to-powerpoint', 'pdf-to-excel', 'pdf-to-jpg', 'pdf-to-markdown', 'pdf-to-pdfa'].map((id) => {
+              {['word-to-pdf', 'powerpoint-to-pdf', 'excel-to-pdf', 'jpg-to-pdf', 'html-to-pdf', 'text-to-pdf', 'markdown-to-pdf', 'scan-to-pdf'].map((id) => {
                 const tool = PDF_TOOLS.find((t) => t.id === id);
                 if (!tool) return null;
                 return (
@@ -92,10 +94,10 @@ export const Footer: React.FC<FooterProps> = ({ onSelectTool, onOpenContact }) =
 
           <div>
             <h5 className="text-xs font-extrabold text-slate-900 uppercase tracking-wider mb-3">
-              Convert To PDF
+              Convert From PDF
             </h5>
             <ul className="space-y-2 text-xs text-slate-600 font-medium">
-              {['word-to-pdf', 'powerpoint-to-pdf', 'excel-to-pdf', 'jpg-to-pdf', 'html-to-pdf', 'text-to-pdf', 'markdown-to-pdf', 'scan-to-pdf'].map((id) => {
+              {['pdf-to-word', 'pdf-to-powerpoint', 'pdf-to-excel', 'pdf-to-jpg', 'pdf-to-markdown', 'pdf-to-pdfa'].map((id) => {
                 const tool = PDF_TOOLS.find((t) => t.id === id);
                 if (!tool) return null;
                 return (
@@ -174,11 +176,14 @@ export const Footer: React.FC<FooterProps> = ({ onSelectTool, onOpenContact }) =
           <div className="flex items-center gap-4 text-xs font-mono text-slate-400">
             <span>Powered by <a href="https://github.com/ripienaar/free-for-dev" target="_blank" rel="noreferrer" className="text-slate-600 hover:text-rose-600">free-for-dev</a></span>
             <span>•</span>
-            <span>Press <kbd className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">Ctrl+K</kbd> to search</span>
+            <span>Press <kbd className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">Ctrl+K</kbd></span>
             <span>•</span>
             <button
               type="button"
-              onClick={() => onSelectTool(null)}
+              onClick={() => {
+                onSelectTool(null);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
               className="hover:text-slate-700 transition-colors cursor-pointer"
             >
               Back to Top ↑
