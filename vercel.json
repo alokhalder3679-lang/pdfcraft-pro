@@ -60,11 +60,37 @@
           "value": "public, max-age=86400, s-maxage=86400"
         }
       ]
+    },
+    {
+      "source": "/llms-full.txt",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, s-maxage=86400"
+        }
+      ]
+    },
+    {
+      "source": "/index.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, s-maxage=86400"
+        }
+      ]
     }
   ],
   "rewrites": [
     {
-      "source": "/((?!sitemap\\.xml|robots\\.txt|llms\\.txt|manifest\\.json|.*\\..*).*)",
+      "source": "/((?!sitemap\\.xml|robots\\.txt|llms\\.txt|llms-full\\.txt|index\\.md|manifest\\.json|.*\\..*).*)",
       "destination": "/index.html"
     }
   ]

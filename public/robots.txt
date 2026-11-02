@@ -1,5 +1,8 @@
 # https://www.robotstxt.org/robotstxt.html
 # PDFCraft Pro Search Engine Crawling Policy
+# Content Signals Policy: Allow search indexing & AI assistance, disallow unauthorized dataset training
+
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 
 User-agent: *
 Allow: /
@@ -7,24 +10,31 @@ Allow: /
 # Allow AI Search & Citability Crawlers
 User-agent: Googlebot
 Allow: /
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 
 User-agent: Bingbot
 Allow: /
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 
 User-agent: Applebot
 Allow: /
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 
 User-agent: DuckDuckBot
 Allow: /
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 
 User-agent: OAI-SearchBot
 Allow: /
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 
 User-agent: Claude-SearchBot
 Allow: /
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 
 User-agent: PerplexityBot
 Allow: /
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 
 User-agent: ChatGPT-User
 Allow: /

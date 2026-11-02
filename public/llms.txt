@@ -1,37 +1,45 @@
-# PDFCraft Pro — Privacy-First In-Browser PDF Suite
+# PDFCraft Pro
 
 > PDFCraft Pro is an open-source, client-side document workstation featuring 35 professional PDF manipulation, conversion, OCR, and editing tools running 100% in-browser via WebAssembly. Zero files are uploaded to any server.
 
 ## Canonical URLs
-- Primary Production: https://pdfcraft-pro.vercel.app/
-- Mirror / Custom Domain: https://pdfcraft-pro.is-a.dev/
+- [Production Workstation](https://pdfcraft-pro.vercel.app/)
+- [Custom Domain Portal](https://pdfcraft-pro.is-a.dev/)
 
-## Key Features & Privacy Guarantees
-- **Zero Server Uploads**: All cryptographic operations, conversions, rendering, and parsing happen locally in user browser memory.
-- **Privacy & Security**: Safe for sensitive medical, legal, and financial documents with strict offline-capable processing.
-- **Free & Unlimited**: No subscriptions, no paywalls, no file size limits imposed by cloud proxies.
-- **WebAssembly Engine**: High-performance PDF processing powered by pdf-lib, PDF.js, Tesseract.js OCR, and SheetJS.
+## Core Privacy & Architecture
+- [Client-Side Privacy](https://pdfcraft-pro.vercel.app/#privacy): All cryptographic operations, conversions, rendering, and parsing happen locally in user browser memory.
+- [WebAssembly Performance](https://pdfcraft-pro.vercel.app/#wasm): High-performance PDF processing powered by compiled WebAssembly modules (pdf-lib, PDF.js, Tesseract.js OCR, SheetJS).
+- [Zero Cost & Unlimited Access](https://pdfcraft-pro.vercel.app/#features): Completely free with zero subscriptions, paywalls, or document quotas.
 
-## Tools Directory
-- Merge PDF: https://pdfcraft-pro.vercel.app/tools/merge-pdf — Combine multiple PDF documents in custom sequence.
-- Split PDF: https://pdfcraft-pro.vercel.app/tools/split-pdf — Separate pages, ranges, or extract selected sheets into standalone PDFs.
-- Compress PDF: https://pdfcraft-pro.vercel.app/tools/compress-pdf — Optimize and reduce PDF file size with extreme, recommended, or low compression.
-- PDF to Word: https://pdfcraft-pro.vercel.app/tools/pdf-to-word — Convert PDF to editable Word DOCX format.
-- Word to PDF: https://pdfcraft-pro.vercel.app/tools/word-to-pdf — Convert DOCX/DOC documents into standardized PDF.
-- PDF to Excel: https://pdfcraft-pro.vercel.app/tools/pdf-to-excel — Extract tabular data and numbers into spreadsheet XLSX/CSV.
-- Excel to PDF: https://pdfcraft-pro.vercel.app/tools/excel-to-pdf — Convert spreadsheets to paginated PDF reports.
-- PDF to PowerPoint: https://pdfcraft-pro.vercel.app/tools/pdf-to-powerpoint — Convert slides and presentations to PPTX.
-- PowerPoint to PDF: https://pdfcraft-pro.vercel.app/tools/powerpoint-to-pdf — Render slide decks into vector PDF.
-- Edit PDF: https://pdfcraft-pro.vercel.app/tools/edit-pdf — Add text, callouts, shapes, and annotations directly to pages.
-- Sign PDF: https://pdfcraft-pro.vercel.app/tools/sign-pdf — Draw, stamp, and apply electronic signatures securely.
-- Watermark PDF: https://pdfcraft-pro.vercel.app/tools/watermark-pdf — Stamp custom text, timestamps, or image watermarks with opacity controls.
-- Rotate PDF: https://pdfcraft-pro.vercel.app/tools/rotate-pdf — Permanently adjust page orientation (90, 180, 270 degrees).
-- Protect PDF: https://pdfcraft-pro.vercel.app/tools/protect-pdf — Encrypt documents with AES passwords.
-- Unlock PDF: https://pdfcraft-pro.vercel.app/tools/unlock-pdf — Remove password security restrictions from authorized files.
-- OCR PDF: https://pdfcraft-pro.vercel.app/tools/ocr-pdf — Optical character recognition to convert scanned documents to searchable text.
-- Compare PDF: https://pdfcraft-pro.vercel.app/tools/compare-pdf — Visual side-by-side diffing between document versions.
-- Redact PDF: https://pdfcraft-pro.vercel.app/tools/redact-pdf — Permanently sanitize and black out sensitive data and PII.
-- Scan to PDF: https://pdfcraft-pro.vercel.app/tools/scan-to-pdf — Capture paper documents using web camera and compile into multi-page PDF.
-- AI Summarizer: https://pdfcraft-pro.vercel.app/tools/ai-summarizer — Extract key takeaways and executive summaries from long reports.
-- Translate PDF: https://pdfcraft-pro.vercel.app/tools/translate-pdf — In-browser multilingual translation preserving document layout.
-- Flatten PDF: https://pdfcraft-pro.vercel.app/tools/flatten-pdf — Bake form fields and annotations into static print-ready layers.
+## Primary PDF Tools
+- [Merge PDF](https://pdfcraft-pro.vercel.app/tools/merge-pdf): Combine multiple PDF documents in custom sequence.
+- [Split PDF](https://pdfcraft-pro.vercel.app/tools/split-pdf): Separate pages, ranges, or extract selected sheets into standalone PDFs.
+- [Compress PDF](https://pdfcraft-pro.vercel.app/tools/compress-pdf): Optimize and reduce PDF file size with extreme, recommended, or low compression.
+- [PDF to Word](https://pdfcraft-pro.vercel.app/tools/pdf-to-word): Convert PDF to editable Word DOCX format.
+- [Word to PDF](https://pdfcraft-pro.vercel.app/tools/word-to-pdf): Convert DOCX and DOC documents into standardized PDF.
+- [PDF to Excel](https://pdfcraft-pro.vercel.app/tools/pdf-to-excel): Extract tabular data and numbers into spreadsheet XLSX or CSV.
+- [Excel to PDF](https://pdfcraft-pro.vercel.app/tools/excel-to-pdf): Convert spreadsheets to paginated PDF reports.
+- [PDF to PowerPoint](https://pdfcraft-pro.vercel.app/tools/pdf-to-powerpoint): Convert slides and presentations to PPTX.
+- [PowerPoint to PDF](https://pdfcraft-pro.vercel.app/tools/powerpoint-to-pdf): Render slide decks into vector PDF.
+- [Edit PDF](https://pdfcraft-pro.vercel.app/tools/edit-pdf): Add text, callouts, shapes, and annotations directly to pages.
+- [Sign PDF](https://pdfcraft-pro.vercel.app/tools/sign-pdf): Draw, stamp, and apply electronic signatures securely.
+- [Watermark PDF](https://pdfcraft-pro.vercel.app/tools/watermark-pdf): Stamp custom text, timestamps, or image watermarks with opacity controls.
+- [Rotate PDF](https://pdfcraft-pro.vercel.app/tools/rotate-pdf): Permanently adjust page orientation (90, 180, 270 degrees).
+- [Protect PDF](https://pdfcraft-pro.vercel.app/tools/protect-pdf): Encrypt documents with AES passwords.
+- [Unlock PDF](https://pdfcraft-pro.vercel.app/tools/unlock-pdf): Remove password security restrictions from authorized files.
+- [OCR PDF](https://pdfcraft-pro.vercel.app/tools/ocr-pdf): Optical character recognition to convert scanned documents to searchable text.
+- [Compare PDF](https://pdfcraft-pro.vercel.app/tools/compare-pdf): Visual side-by-side diffing between document versions.
+- [Redact PDF](https://pdfcraft-pro.vercel.app/tools/redact-pdf): Permanently sanitize and black out sensitive data and PII.
+- [Scan to PDF](https://pdfcraft-pro.vercel.app/tools/scan-to-pdf): Capture paper documents using web camera and compile into multi-page PDF.
+- [AI Summarizer](https://pdfcraft-pro.vercel.app/tools/ai-summarizer): Extract key takeaways and executive summaries from long reports.
+- [Translate PDF](https://pdfcraft-pro.vercel.app/tools/translate-pdf): In-browser multilingual translation preserving document layout.
+- [Flatten PDF](https://pdfcraft-pro.vercel.app/tools/flatten-pdf): Bake form fields and annotations into static print-ready layers.
+- [PDF to PDF/A](https://pdfcraft-pro.vercel.app/tools/pdf-to-pdfa): Standardize documents into ISO-compliant long-term archival format.
+- [Organize PDF](https://pdfcraft-pro.vercel.app/tools/organize-pdf): Reorder, rotate, duplicate, or delete PDF pages visually.
+- [PDF to Markdown](https://pdfcraft-pro.vercel.app/tools/pdf-to-markdown): Extract clean Markdown text for notes and LLM prompts.
+- [Markdown to PDF](https://pdfcraft-pro.vercel.app/tools/markdown-to-pdf): Render Markdown documents into styled PDF reports.
+- [Crop PDF](https://pdfcraft-pro.vercel.app/tools/crop-pdf): Trim margins and custom crop rectangular page regions.
+- [Repair PDF](https://pdfcraft-pro.vercel.app/tools/repair-pdf): Rebuild broken xref tables and recover damaged PDF streams.
+
+## Optional Reference
+- [Full Documentation](https://pdfcraft-pro.vercel.app/llms-full.txt): Detailed specifications of all 35 document transformation pipelines.

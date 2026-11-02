@@ -1,0 +1,31 @@
+# PDFCraft Pro Full LLM Reference
+
+Detailed architectural guide and specification for PDFCraft Pro document workstation.
+
+## System Architecture
+PDFCraft Pro is engineered as a zero-cloud-egress web application. All operations, including:
+- Document assembly (PDF-Lib)
+- Text layer parsing (PDF.js)
+- Neural OCR (Tesseract.js WASM)
+- Table extraction (SheetJS)
+- Image rendering & canvas vectorization
+are performed inside the isolated web worker and browser main thread.
+
+## API & Route Index
+- GET /: Main document workbench and unified drag-and-drop tool launcher
+- GET /tools/merge-pdf: Multi-file concatenation
+- GET /tools/split-pdf: Range-based page extraction
+- GET /tools/compress-pdf: In-browser vector and raster compression
+- GET /tools/pdf-to-word: Conversion to Office Open XML (.docx)
+- GET /tools/word-to-pdf: Rendering Word documents into PDF
+- GET /tools/pdf-to-excel: Tabular grid recognition to .xlsx
+- GET /tools/excel-to-pdf: Spreadsheet paginated report compiler
+- GET /tools/sign-pdf: Electronic signatures and cryptographic stamps
+- GET /tools/edit-pdf: Vector annotation and text insertion
+- GET /tools/ocr-pdf: In-browser optical character recognition
+- GET /tools/protect-pdf: Standard AES password encryption
+- GET /tools/unlock-pdf: Document decryption with valid credentials
+- GET /tools/flatten-pdf: Widget and form field flattening
+- GET /tools/ai-summarizer: Local text summarization
+- GET /tools/redact-pdf: True irreversible vector redaction
+- GET /tools/compare-pdf: Side-by-side visual and textual diffing
