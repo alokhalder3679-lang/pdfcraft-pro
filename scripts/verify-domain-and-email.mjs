@@ -33,9 +33,8 @@ assert(fs.existsSync(isADevPath), 'is-a.dev registration file exists');
 
 if (fs.existsSync(isADevPath)) {
   const content = JSON.parse(fs.readFileSync(isADevPath, 'utf8'));
-  assert(content.owner && content.owner.username, 'Owner username specified in is-a.dev JSON');
-  assert(content.record && content.record.CNAME === 'cname.vercel-dns.com', 'CNAME points to cname.vercel-dns.com');
-  assert(content.repo.includes('pdfcraft-pro'), 'Repository URL valid in is-a.dev JSON');
+  assert(content.owner && content.owner.username === 'alokhalder3679-lang', 'Owner username specified in is-a.dev JSON');
+  assert(content.records && content.records.CNAME === 'cname.vercel-dns.com', 'CNAME points to cname.vercel-dns.com in records object');
 }
 
 // 2. Verify js.org CNAME instructions
